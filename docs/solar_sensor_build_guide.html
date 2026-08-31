@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roof Sensor Build Guide</title>
+<style>
+  :root{
+    --bg:#faf9f6; --panel:#ffffff; --ink:#1f2933; --muted:#5b6b7a; --line:#dcd9d2;
+    --accent:#b45309; --accent-soft:#fdf0e3;
+    --ok:#166534; --ok-soft:#e8f3ea;
+    --warn:#9a3412; --warn-soft:#fdeee6;
+    --info:#1e4f77; --info-soft:#e8f0f7;
+    --code-bg:#f3f1ec; --code-ink:#3d3427;
+    --chip:#eceae4;
+    --wire-red:#c0392b; --wire-blk:#4b5563; --wire-yel:#b7791f;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15181c; --panel:#1d2126; --ink:#e6e3dc; --muted:#9aa5b1; --line:#343a42;
+      --accent:#e8963f; --accent-soft:#2b2318;
+      --ok:#7fbf8e; --ok-soft:#1c2a20;
+      --warn:#e8a17c; --warn-soft:#2e2019;
+      --info:#8db8dc; --info-soft:#1a2530;
+      --code-bg:#23272e; --code-ink:#ded9cf;
+      --chip:#2a2f36;
+      --wire-red:#e06a5a; --wire-blk:#aab3bf; --wire-yel:#dfa94e;
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap{max-width:1000px; margin:0 auto; padding:0 24px 96px}
+  header.hero{padding:56px 0 8px}
+  .kicker{color:var(--accent); font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:12px}
+  h1{font-size:40px; line-height:1.1; margin:10px 0 14px; letter-spacing:-.01em}
+  .lede{color:var(--muted); font-size:18px; max-width:64ch}
+  .meta{display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 0}
+  .chip{background:var(--chip); border:1px solid var(--line); border-radius:999px; padding:4px 12px; font-size:13px; color:var(--muted)}
+  nav.toc{margin:34px 0 0; display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:10px}
+  nav.toc a{
+    display:block; background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; text-decoration:none; color:var(--ink); font-size:14px;
+  }
+  nav.toc a:hover{border-color:var(--accent)}
+  nav.toc .n{color:var(--accent); font-weight:700; margin-right:8px; font-variant-numeric:tabular-nums}
+  section{margin-top:64px}
+  h2{
+    font-size:27px; margin:0 0 6px; letter-spacing:-.01em; scroll-margin-top:24px;
+    display:flex; align-items:baseline; gap:12px;
+  }
+  h2 .pnum{
+    color:var(--accent); font-size:15px; font-weight:800; letter-spacing:.08em; white-space:nowrap;
+  }
+  .sub{color:var(--muted); margin:0 0 22px; max-width:70ch}
+  h3{font-size:19px; margin:34px 0 10px}
+  p{max-width:76ch}
+  a{color:var(--info)}
+  table{border-collapse:collapse; width:100%; font-size:14.5px; background:var(--panel); border:1px solid var(--line); border-radius:10px; overflow:hidden}
+  .tblwrap{overflow-x:auto; margin:14px 0}
+  th,td{padding:9px 12px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line)}
+  th{background:var(--chip); font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted)}
+  tr:last-child td{border-bottom:none}
+  code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em}
+  code{background:var(--code-bg); color:var(--code-ink); padding:1px 6px; border-radius:5px}
+  pre{
+    background:var(--code-bg); color:var(--code-ink); border:1px solid var(--line); border-radius:10px;
+    padding:16px 18px; overflow-x:auto; font-size:13.5px; line-height:1.5; margin:14px 0;
+  }
+  pre code{background:none; padding:0; color:inherit}
+  .callout{border-left:4px solid; border-radius:8px; padding:13px 16px; margin:16px 0; font-size:15px}
+  .callout strong.tag{display:block; font-size:12px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:4px}
+  .warn{background:var(--warn-soft); border-color:var(--warn)} .warn .tag{color:var(--warn)}
+  .info{background:var(--info-soft); border-color:var(--info)} .info .tag{color:var(--info)}
+  .tip {background:var(--ok-soft);  border-color:var(--ok)}  .tip  .tag{color:var(--ok)}
+  .step{
+    display:grid; grid-template-columns:30px 1fr; gap:12px; align-items:start;
+    background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    padding:13px 16px; margin:10px 0;
+  }
+  .step input[type=checkbox]{
+    width:19px; height:19px; margin-top:3px; accent-color:var(--accent); cursor:pointer;
+  }
+  .step label{cursor:pointer}
+  .step input:checked + label{opacity:.55}
+  .step strong{display:inline}
+  figure{margin:22px 0; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px}
+  figcaption{color:var(--muted); font-size:13.5px; margin-top:10px}
+  svg{width:100%; height:auto; display:block}
+  svg text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  @media (max-width:760px){ .grid2{grid-template-columns:1fr} h1{font-size:32px} }
+  .footer{margin-top:80px; color:var(--muted); font-size:13.5px; border-top:1px solid var(--line); padding-top:18px}
+  @media print{
+    body{background:#fff; color:#000}
+    nav.toc, .noprint{display:none}
+    section{margin-top:28px; break-inside:avoid-page}
+    .step,figure,pre{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Pool project · build guide</div>
+  <h1>Solar-Powered Roof Temperature Sensor</h1>
+  <p class="lede">A step-by-step build of the independent Wi-Fi temperature node that will sit beside the Pentair solar collectors: firmware first, then breadboard, then perfboard, then into the weatherproof enclosure, then onto the roof.</p>
+  <div class="meta">
+    <span class="chip">Parts ordered Aug 30, 2026</span>
+    <span class="chip">MCU: XIAO ESP32-C3</span>
+    <span class="chip">Power: DFRobot DFR0559</span>
+    <span class="chip">Sensor: DS18B20 (1-Wire)</span>
+    <span class="chip">Transport: MQTT → Raspberry Pi</span>
+  </div>
+  <nav class="toc" aria-label="Contents">
+    <a href="#overview"><span class="n">1</span>How it works</a>
+    <a href="#parts"><span class="n">2</span>Parts &amp; tools</a>
+    <a href="#safety"><span class="n">3</span>Read this first</a>
+    <a href="#phase-a"><span class="n">A</span>Firmware on the bare board</a>
+    <a href="#phase-b"><span class="n">B</span>Breadboard bring-up</a>
+    <a href="#phase-c"><span class="n">C</span>Perfboard sled</a>
+    <a href="#phase-d"><span class="n">D</span>Enclosure</a>
+    <a href="#phase-e"><span class="n">E</span>Roof install</a>
+    <a href="#commissioning"><span class="n">6</span>Commissioning</a>
+    <a href="#troubleshooting"><span class="n">7</span>Troubleshooting</a>
+    <a href="#appendix"><span class="n">8</span>Appendix</a>
+  </nav>
+</header>
+
+<!-- ==================== 1. OVERVIEW ==================== -->
+<section id="overview">
+  <h2><span class="pnum">1</span>How it works</h2>
+  <p class="sub">One reading every five minutes, sent over 2.4&nbsp;GHz Wi-Fi, powered forever by a small panel and a LiPo. The EasyTouch stays the authoritative controller — this node only measures and reports.</p>
+
+  <figure>
+    <svg viewBox="0 0 880 250" role="img" aria-label="System diagram">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/>
+        </marker>
+      </defs>
+      <!-- sun -->
+      <circle cx="60" cy="52" r="20" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+      <g stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round">
+        <line x1="60" y1="18" x2="60" y2="8"/><line x1="60" y1="86" x2="60" y2="96"/>
+        <line x1="26" y1="52" x2="16" y2="52"/><line x1="94" y1="52" x2="104" y2="52"/>
+        <line x1="36" y1="28" x2="29" y2="21"/><line x1="84" y1="76" x2="91" y2="83"/>
+        <line x1="84" y1="28" x2="91" y2="21"/><line x1="36" y1="76" x2="29" y2="83"/>
+      </g>
+      <!-- panel -->
+      <rect x="130" y="26" width="118" height="66" rx="6" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+      <line x1="169" y1="26" x2="169" y2="92" stroke="var(--ink)" stroke-width="1"/>
+      <line x1="208" y1="26" x2="208" y2="92" stroke="var(--ink)" stroke-width="1"/>
+      <line x1="130" y1="59" x2="248" y2="59" stroke="var(--ink)" stroke-width="1"/>
+      <text x="189" y="118" text-anchor="middle" font-size="13" fill="var(--ink)" font-weight="600">5&nbsp;V solar panel</text>
+      <text x="189" y="134" text-anchor="middle" font-size="12" fill="var(--muted)">Qiilu 2.5&nbsp;W · V<tspan baseline-shift="sub" font-size="9">OC</tspan> ≤ 6.5&nbsp;V</text>
+      <!-- DFR0559 -->
+      <rect x="318" y="20" width="168" height="78" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/>
+      <text x="402" y="50" text-anchor="middle" font-size="14" fill="var(--ink)" font-weight="700">DFR0559</text>
+      <text x="402" y="68" text-anchor="middle" font-size="12" fill="var(--muted)">Solar Power Manager 5V</text>
+      <text x="402" y="84" text-anchor="middle" font-size="12" fill="var(--muted)">charge · protect · boost</text>
+      <!-- battery -->
+      <rect x="345" y="150" width="114" height="44" rx="6" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+      <rect x="459" y="163" width="7" height="18" fill="var(--ink)"/>
+      <text x="402" y="176" text-anchor="middle" font-size="12.5" fill="var(--ink)" font-weight="600">EEMB 3.7 V 2000 mAh</text>
+      <text x="402" y="216" text-anchor="middle" font-size="12" fill="var(--muted)">BAT IN — the battery connects here and only here</text>
+      <line x1="402" y1="98" x2="402" y2="150" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#arr)" marker-start="url(#arr)"/>
+      <!-- XIAO -->
+      <rect x="556" y="20" width="128" height="78" rx="8" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+      <text x="620" y="50" text-anchor="middle" font-size="14" fill="var(--ink)" font-weight="700">XIAO ESP32-C3</text>
+      <text x="620" y="68" text-anchor="middle" font-size="12" fill="var(--muted)">wake · read · publish</text>
+      <text x="620" y="84" text-anchor="middle" font-size="12" fill="var(--muted)">deep sleep 300 s</text>
+      <!-- probe -->
+      <rect x="560" y="158" width="86" height="16" rx="8" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+      <rect x="646" y="160" width="26" height="12" rx="3" fill="var(--ink)"/>
+      <text x="616" y="196" text-anchor="middle" font-size="12.5" fill="var(--ink)" font-weight="600">DS18B20 probe</text>
+      <text x="616" y="212" text-anchor="middle" font-size="12" fill="var(--muted)">mounted beside the Pentair solar sensor</text>
+      <line x1="612" y1="98" x2="612" y2="156" stroke="var(--wire-yel)" stroke-width="2" marker-end="url(#arr)"/>
+      <!-- Pi -->
+      <rect x="748" y="20" width="112" height="78" rx="8" fill="var(--info-soft)" stroke="var(--info)" stroke-width="1.8"/>
+      <text x="804" y="50" text-anchor="middle" font-size="14" fill="var(--ink)" font-weight="700">Raspberry Pi</text>
+      <text x="804" y="68" text-anchor="middle" font-size="12" fill="var(--muted)">MQTT broker</text>
+      <text x="804" y="84" text-anchor="middle" font-size="12" fill="var(--muted)">→ logger / grapher</text>
+      <!-- flows -->
+      <line x1="248" y1="59" x2="314" y2="59" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+      <line x1="486" y1="59" x2="552" y2="59" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="519" y="48" text-anchor="middle" font-size="11" fill="var(--muted)">USB 5 V</text>
+      <g stroke="var(--info)" stroke-width="1.8" fill="none">
+        <path d="M694 45 q10 14 0 28"/><path d="M706 38 q16 21 0 42"/><path d="M718 31 q22 28 0 56"/>
+      </g>
+      <text x="712" y="118" text-anchor="middle" font-size="11" fill="var(--muted)">Wi-Fi · MQTT</text>
+    </svg>
+    <figcaption>The DFR0559 is the entire power subsystem — panel in, battery managed, regulated 5&nbsp;V out. The XIAO only senses and transmits. There is no separate charger, boost board, or power bank anywhere in this build.</figcaption>
+  </figure>
+
+  <p>The build happens in five phases, each one fully tested before the next begins:</p>
+  <div class="tblwrap"><table>
+    <tr><th>Phase</th><th>What you do</th><th>What proves it worked</th></tr>
+    <tr><td><strong>A — Firmware</strong></td><td>Flash the bare XIAO at your desk, stand up the MQTT broker</td><td>JSON messages arrive on the Pi every 15&nbsp;s</td></tr>
+    <tr><td><strong>B — Breadboard</strong></td><td>Wire the sensor, then add the DFR0559 + battery + panel</td><td>48&nbsp;h unattended soak on solar/battery power</td></tr>
+    <tr><td><strong>C — Perfboard</strong></td><td>Move everything to a soldered “sled” that drops into the box</td><td>Same soak test passes on the sled</td></tr>
+    <tr><td><strong>D — Enclosure</strong></td><td>Drill glands, mount the sled, seal the box</td><td>Full system runs with the lid on, RSSI still healthy</td></tr>
+    <tr><td><strong>E — Roof</strong></td><td>Temporary placement, then permanent mounting</td><td>Several days of clean data beside the Pentair sensor</td></tr>
+  </table></div>
+</section>
+
+<!-- ==================== 2. PARTS ==================== -->
+<section id="parts">
+  <h2><span class="pnum">2</span>Parts &amp; tools</h2>
+  <p class="sub">Split by where they’re coming from: the Aug 30 order, and the bench stock you already own (mostly from the Aug 18 orders).</p>
+
+  <h3>Arriving from the Aug 30 order</h3>
+  <div class="tblwrap"><table>
+    <tr><th>Part</th><th>Role</th><th>Notes</th></tr>
+    <tr><td>DFRobot <strong>Solar Power Manager 5V (DFR0559)</strong></td><td>Charging, protection, regulated 5&nbsp;V</td><td>Ships with ON/OFF jumper, 4× M3 nylon pillars + screws, cooling fin + thermal pad. Confirm it’s the current <strong>V1.1</strong> board on arrival.</td></tr>
+    <tr><td>Seeed <strong>XIAO ESP32-C3</strong></td><td>MCU + Wi-Fi</td><td>U.FL antenna is in the box — the C3 has <em>no</em> onboard antenna, so the antenna is mandatory.</td></tr>
+    <tr><td><strong>DROK DS18B20 5-pack</strong> + adapter boards</td><td>Waterproof temp probe</td><td>Adapter board has the 4.7&nbsp;kΩ pull-up built in. Ignore the loose resistors in the bag. 4 spare probes.</td></tr>
+    <tr><td><strong>Qiilu 5&nbsp;V / 500&nbsp;mA panels</strong> (2 pcs)</td><td>Solar input</td><td>2.5&nbsp;W each, 130 × 150 mm, 100&nbsp;cm attached lead. One is a spare. V<sub>OC</sub> must be verified before connecting (§3).</td></tr>
+    <tr><td><strong>EEMB 103454 LiPo</strong> 3.7&nbsp;V 2000&nbsp;mAh</td><td>Overnight reserve</td><td>Protected (PCM), JST-PH&nbsp;2.0 plug. Polarity must be verified before plugging in (§3). ~13 days of zero-sun runtime.</td></tr>
+    <tr><td><strong>LeMotech IP65 box</strong>, white, 150 × 110 × 70&nbsp;mm</td><td>Enclosure</td><td>Gasketed lid, 4 lid screws.</td></tr>
+  </table></div>
+
+  <h3>Already on your bench</h3>
+  <div class="tblwrap"><table>
+    <tr><th>Item</th><th>Used in phase</th></tr>
+    <tr><td>BOJACK breadboards (830-point) + jumper wires</td><td>B</td></tr>
+    <tr><td>Glarks male pin headers · Ferwooh single-row female sockets</td><td>B (headers on XIAO) · C (sockets on sled)</td></tr>
+    <tr><td>ELEGOO double-sided perfboard kit (use the 8 × 12 cm board as the sled)</td><td>C</td></tr>
+    <tr><td>Fermerry 22 AWG stranded wire (red / black / yellow used here)</td><td>C</td></tr>
+    <tr><td>Wirefy 3:1 adhesive-lined heat shrink</td><td>C, E</td></tr>
+    <tr><td>MAKERELE PG7 cable glands (need 2 of the 20)</td><td>D</td></tr>
+    <tr><td>MCMASKE M2 nylon standoffs · adhesive neoprene foam sheet</td><td>C, D</td></tr>
+    <tr><td>JST-PH 2.0 pigtail pairs (only if the battery plug needs a polarity adapter)</td><td>B</td></tr>
+    <tr><td>6-inch USB-A→C cables (from the 2024 5-pack): one for DFR0559 → XIAO</td><td>C, D</td></tr>
+    <tr><td>Bench power supply, digital caliper, multimeter</td><td>all</td></tr>
+  </table></div>
+
+  <h3>Tools for the day</h3>
+  <p>Soldering iron + solder + flux, wire strippers, small screwdrivers (the DFR0559 and DROK screw terminals are ~2&nbsp;mm slotted), heat gun or lighter for shrink, drill with a <strong>step bit that reaches 12.5–13&nbsp;mm</strong> (a plain 1/2″ bit also works for the gland holes), center punch or awl, painter’s tape, any micro-USB cable (bench-charging the DFR0559), and a USB-C data cable for flashing.</p>
+
+  <div class="callout info"><strong class="tag">Before roof day</strong>
+  Cable ties that live on the roof must be UV-rated (black nylon 6/6 “UV” or stainless). The GTSE saddle-tie pack was dropped from the order — grab UV ties before Phase E, or the panel lead tie-downs will get brittle within a season or two of San Jose sun.</div>
+</section>
+
+<!-- ==================== 3. SAFETY ==================== -->
+<section id="safety">
+  <h2><span class="pnum">3</span>Read this first — the five rules</h2>
+  <p class="sub">Every damaged-board story with this exact parts combination traces back to one of these. Two minutes here saves a reorder.</p>
+
+  <div class="callout warn"><strong class="tag">Rule 1 — verify battery polarity before plugging in</strong>
+  JST-PH plug polarity is <em>not standardized</em> between battery brands and board vendors. Meter first: DC volts, red probe to the contact fed by the battery’s <strong>red</strong> wire — you should read about +3.6 to +4.1&nbsp;V. Then look at the <code>+</code>/<code>−</code> silkscreen beside the DFR0559’s BAT connectors and confirm the red wire will land on <code>+</code>. If it’s backwards, don’t cut anything — build a crossover from one of your JST-PH pigtail pairs, or use the BAT <em>screw terminal</em> instead (red → +, black → −). The board has a battery-reverse LED; if it ever lights, unplug immediately.</div>
+
+  <div class="callout warn"><strong class="tag">Rule 2 — verify panel V<sub>OC</sub> before connecting</strong>
+  The DFR0559 solar input is rated 4.5–6&nbsp;V and tolerates ~6.5&nbsp;V open-circuit, no more. In midday sun, meter the panel’s bare leads with nothing connected: expect <strong>~6.0–6.3&nbsp;V</strong>. At or under 6.5&nbsp;V → good. Over → don’t connect it (that would be a mislabeled 6&nbsp;V-class panel). This is also the moment you identify which lead is + for the screw terminal.</div>
+
+  <div class="callout warn"><strong class="tag">Rule 3 — the battery touches only the DFR0559</strong>
+  The XIAO’s own battery pads stay empty forever. Two chargers on one cell fight each other. Power reaches the XIAO exclusively through the USB-A → USB-C cable.</div>
+
+  <div class="callout warn"><strong class="tag">Rule 4 — one USB source at a time on the XIAO</strong>
+  When you want to reflash after assembly, unplug the DFR0559’s USB cable from the XIAO first, then connect the computer. Never both at once.</div>
+
+  <div class="callout warn"><strong class="tag">Rule 5 — antenna on before power</strong>
+  The ESP32-C3 has no onboard antenna. Snap the U.FL antenna on (press straight down with a fingernail until it clicks) before the board ever transmits, and route it away from the battery and any metal.</div>
+</section>
+
+<!-- ==================== PHASE A ==================== -->
+<section id="phase-a">
+  <h2><span class="pnum">PHASE A</span>Firmware on the bare board</h2>
+  <p class="sub">Flash and prove the whole software path — Wi-Fi, MQTT, deep sleep — before a single wire is connected. A bare XIAO on a USB cable can’t hurt anything.</p>
+
+  <h3>A1 · Broker on the Raspberry Pi</h3>
+  <div class="step"><input type="checkbox" id="a1"><label for="a1"><strong>Install Mosquitto.</strong> On the existing Pi:
+  <pre><code>sudo apt update &amp;&amp; sudo apt install -y mosquitto mosquitto-clients</code></pre></label></div>
+  <div class="step"><input type="checkbox" id="a2"><label for="a2"><strong>Open it to the LAN.</strong> Recent Mosquitto builds listen on localhost only by default:
+  <pre><code>printf 'listener 1883\nallow_anonymous true\n' | sudo tee /etc/mosquitto/conf.d/lan.conf
+sudo systemctl restart mosquitto</code></pre>
+  (Anonymous is fine on your home LAN for phase one; add credentials later if you like.)</label></div>
+  <div class="step"><input type="checkbox" id="a3"><label for="a3"><strong>Start a watcher and leave it running.</strong> This terminal is your “did it publish?” oracle for the rest of the build:
+  <pre><code>mosquitto_sub -h localhost -t 'pool/solar-roof/#' -v</code></pre>
+  Note the Pi’s LAN IP (<code>hostname -I</code>) — it goes into the sketch.</label></div>
+
+  <h3>A2 · Arduino environment</h3>
+  <div class="step"><input type="checkbox" id="a4"><label for="a4"><strong>Install the ESP32 core.</strong> Arduino IDE → Settings → Additional boards manager URLs: <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> → Boards Manager → install “<strong>esp32 by Espressif Systems</strong>” (latest).</label></div>
+  <div class="step"><input type="checkbox" id="a5"><label for="a5"><strong>Install three libraries</strong> via Library Manager: <code>OneWire</code> (Paul Stoffregen), <code>DallasTemperature</code> (Miles Burton), <code>PubSubClient</code> (Nick O’Leary).</label></div>
+  <div class="step"><input type="checkbox" id="a6"><label for="a6"><strong>Select the board.</strong> Tools → Board → esp32 → <strong>XIAO_ESP32C3</strong>. Attach the U.FL antenna (Rule 5), plug in via USB-C, pick the port.</label></div>
+
+  <h3>A3 · The sketch</h3>
+  <p>Complete firmware. Fill in the four <code>CONFIG</code> lines. <code>TEST_MODE 1</code> gives 15-second cycles with serial logging; flip to <code>0</code> for the production 300-second cycle before roof day.</p>
+<pre><code>#include &lt;WiFi.h&gt;
+#include &lt;PubSubClient.h&gt;
+#include &lt;OneWire.h&gt;
+#include &lt;DallasTemperature.h&gt;
+
+// ---------------- CONFIG ----------------
+#define TEST_MODE 1                       // 1 = 15 s cycle + serial, 0 = 300 s production
+const char* WIFI_SSID  = "YOUR_SSID";     // 2.4 GHz network
+const char* WIFI_PASS  = "YOUR_PASSWORD";
+const char* MQTT_HOST  = "192.168.1.50";  // Raspberry Pi IP
+const char* MQTT_TOPIC = "pool/solar-roof/temperature";
+// ----------------------------------------
+
+const uint16_t MQTT_PORT       = 1883;
+const char*    SENSOR_ID       = "roof-solar-reference";
+const uint32_t SLEEP_SECONDS   = TEST_MODE ? 15 : 300;
+const uint32_t WAKE_TIMEOUT_MS = 20000;   // give up and sleep rather than drain the battery
+
+#define ONE_WIRE_PIN D2                   // XIAO C3: GPIO4. (The D2 macro is also correct on a C6.)
+
+RTC_DATA_ATTR uint32_t bootCount = 0;     // survives deep sleep, resets on power loss
+
+OneWire           oneWire(ONE_WIRE_PIN);
+DallasTemperature sensors(&amp;oneWire);
+WiFiClient        net;
+PubSubClient      mqtt(net);
+
+void goToSleep() {
+  WiFi.disconnect(true);
+  WiFi.mode(WIFI_OFF);
+  esp_sleep_enable_timer_wakeup((uint64_t)SLEEP_SECONDS * 1000000ULL);
+  esp_deep_sleep_start();                 // never returns
+}
+
+void setup() {
+  uint32_t t0 = millis();
+  bootCount++;
+
+#if TEST_MODE
+  Serial.begin(115200);
+  delay(2000);                            // USB-CDC needs a moment to enumerate
+  Serial.printf("\n[boot %lu] waking\n", (unsigned long)bootCount);
+#endif
+
+  // 1 — read the probe before the radio wakes (cleaner power, faster)
+  sensors.begin();
+  sensors.requestTemperatures();
+  float tempF  = sensors.getTempFByIndex(0);
+  bool  tempOk = (tempF &gt; -100.0);        // library returns -196.6 F when no probe answers
+
+  // 2 — Wi-Fi, with the hard timeout from the design doc
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  while (WiFi.status() != WL_CONNECTED) {
+    if (millis() - t0 &gt; WAKE_TIMEOUT_MS) goToSleep();
+    delay(100);
+  }
+
+  // 3 — publish one retained reading
+  mqtt.setServer(MQTT_HOST, MQTT_PORT);
+  char clientId[32];
+  snprintf(clientId, sizeof(clientId), "roofsensor-%06lX",
+           (unsigned long)(ESP.getEfuseMac() &amp; 0xFFFFFF));
+  while (!mqtt.connect(clientId)) {
+    if (millis() - t0 &gt; WAKE_TIMEOUT_MS) goToSleep();
+    delay(250);
+  }
+  char payload[160];
+  snprintf(payload, sizeof(payload),
+    "{\"sensor\":\"%s\",\"temperature_f\":%.1f,\"temp_ok\":%s,"
+    "\"wifi_rssi_dbm\":%d,\"boot_count\":%lu}",
+    SENSOR_ID, tempF, tempOk ? "true" : "false",
+    WiFi.RSSI(), (unsigned long)bootCount);
+  mqtt.publish(MQTT_TOPIC, payload, true);
+  mqtt.loop();
+  delay(100);                             // let the TCP packet flush before sleeping
+
+#if TEST_MODE
+  Serial.printf("[boot %lu] sent: %s\n", (unsigned long)bootCount, payload);
+#endif
+  goToSleep();
+}
+
+void loop() {}                            // never reached — everything happens in setup()</code></pre>
+
+  <div class="step"><input type="checkbox" id="a7"><label for="a7"><strong>Flash it</strong> (Upload). If the port ever refuses after a deep-sleep flash: unplug, hold the <strong>B</strong> (BOOT) button, plug in while holding, release — that’s bootloader mode, upload again.</label></div>
+  <div class="step"><input type="checkbox" id="a8"><label for="a8"><strong>Watch one full cycle.</strong> Serial monitor at 115200. Expect <code>[boot 1] waking</code>, then a <code>sent:</code> line with <code>temperature_f: -196.6</code> and <code>temp_ok: false</code> — correct, no probe is wired yet. The port will drop during sleep and re-enumerate each wake; that’s deep sleep working.</label></div>
+  <div class="step"><input type="checkbox" id="a9"><label for="a9"><strong>Confirm on the Pi.</strong> The <code>mosquitto_sub</code> terminal shows the same JSON every ~17&nbsp;s, and <code>boot_count</code> climbs by exactly 1 each time. Phase A done.</label></div>
+
+  <div class="callout tip"><strong class="tag">Tip</strong> <code>boot_count</code> is stored in RTC memory: it survives deep sleep but resets to 1 on real power loss. Later, on the roof, a counter that unexpectedly restarts from 1 is your brownout detector.</div>
+</section>
+
+<!-- ==================== PHASE B ==================== -->
+<section id="phase-b">
+  <h2><span class="pnum">PHASE B</span>Breadboard bring-up</h2>
+  <p class="sub">Sensor first on USB power, then the solar power chain. Everything stays reworkable — nothing is soldered except the XIAO’s own header pins.</p>
+
+  <h3>B1 · Headers on the XIAO</h3>
+  <div class="step"><input type="checkbox" id="b1"><label for="b1"><strong>Solder male headers to the XIAO.</strong> Cut two 7-pin strips from the Glarks headers. Use the breadboard as the jig: push the strips into the breadboard 7 rows apart, seat the XIAO on top, solder one end pin per side, check the board sits flat and square, reheat to adjust if not, then solder the rest.</label></div>
+
+  <h3>B2 · Wire the DS18B20</h3>
+  <figure>
+    <svg viewBox="0 0 880 330" role="img" aria-label="Breadboard wiring diagram">
+      <!-- XIAO body -->
+      <rect x="60" y="40" width="150" height="230" rx="10" fill="var(--panel)" stroke="var(--ink)" stroke-width="1.8"/>
+      <rect x="105" y="28" width="60" height="24" rx="4" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+      <text x="135" y="22" text-anchor="middle" font-size="11" fill="var(--muted)">USB-C</text>
+      <circle cx="80" cy="58" r="5" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+      <text x="94" y="62" font-size="10" fill="var(--muted)">U.FL</text>
+      <text x="135" y="160" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">XIAO</text>
+      <text x="135" y="178" text-anchor="middle" font-size="12" fill="var(--muted)">ESP32-C3</text>
+      <!-- left pins -->
+      <g font-size="11.5" fill="var(--ink)">
+        <text x="48" y="86"  text-anchor="end">D0</text>
+        <text x="48" y="112" text-anchor="end">D1</text>
+        <text x="48" y="138" text-anchor="end" font-weight="700">D2</text>
+        <text x="48" y="151" text-anchor="end" font-size="9" fill="var(--muted)">(GPIO4)</text>
+        <text x="48" y="164" text-anchor="end">D3</text>
+        <text x="48" y="190" text-anchor="end">D4</text>
+        <text x="48" y="216" text-anchor="end">D5</text>
+        <text x="48" y="242" text-anchor="end">D6</text>
+      </g>
+      <g fill="var(--ink)">
+        <circle cx="60" cy="82" r="3"/><circle cx="60" cy="108" r="3"/><circle cx="60" cy="134" r="3.5"/>
+        <circle cx="60" cy="160" r="3"/><circle cx="60" cy="186" r="3"/><circle cx="60" cy="212" r="3"/><circle cx="60" cy="238" r="3"/>
+      </g>
+      <!-- right pins -->
+      <g font-size="11.5" fill="var(--ink)">
+        <text x="222" y="86"  font-weight="700">5V</text>
+        <text x="222" y="112" font-weight="700">GND</text>
+        <text x="222" y="138" font-weight="700">3V3</text>
+        <text x="222" y="164">D10</text>
+        <text x="222" y="190">D9</text>
+        <text x="222" y="216">D8</text>
+        <text x="222" y="242">D7</text>
+      </g>
+      <g fill="var(--ink)">
+        <circle cx="210" cy="82" r="3"/><circle cx="210" cy="108" r="3.5"/><circle cx="210" cy="134" r="3.5"/>
+        <circle cx="210" cy="160" r="3"/><circle cx="210" cy="186" r="3"/><circle cx="210" cy="212" r="3"/><circle cx="210" cy="238" r="3"/>
+      </g>
+      <!-- adapter -->
+      <rect x="470" y="80" width="180" height="130" rx="8" fill="var(--panel)" stroke="var(--ink)" stroke-width="1.8"/>
+      <text x="560" y="106" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">DROK adapter board</text>
+      <text x="560" y="124" text-anchor="middle" font-size="11" fill="var(--ok)">4.7 kΩ pull-up already on board</text>
+      <g font-size="11.5" fill="var(--ink)">
+        <circle cx="470" cy="150" r="3.5" /><text x="484" y="154">VCC</text>
+        <circle cx="470" cy="172" r="3.5"/><text x="484" y="176">DATA</text>
+        <circle cx="470" cy="194" r="3.5"/><text x="484" y="198">GND</text>
+      </g>
+      <!-- screw side -->
+      <g font-size="11.5" fill="var(--ink)">
+        <rect x="620" y="140" width="30" height="62" rx="4" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+        <circle cx="635" cy="152" r="4" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+        <circle cx="635" cy="171" r="4" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+        <circle cx="635" cy="190" r="4" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+      </g>
+      <!-- probe -->
+      <line x1="650" y1="171" x2="740" y2="171" stroke="var(--muted)" stroke-width="3"/>
+      <rect x="740" y="160" width="70" height="22" rx="11" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+      <rect x="810" y="163" width="30" height="16" rx="3" fill="var(--ink)"/>
+      <text x="785" y="205" text-anchor="middle" font-size="11.5" fill="var(--muted)">DS18B20 probe</text>
+      <text x="700" y="150" text-anchor="middle" font-size="10.5" fill="var(--muted)">red / yellow / black</text>
+      <text x="700" y="162" text-anchor="middle" font-size="10.5" fill="var(--muted)">to screw terminals</text>
+      <!-- wires -->
+      <path d="M210 134 C 260 148, 380 158, 466 150" fill="none" stroke="var(--wire-red)" stroke-width="2.6"/>
+      <text x="290" y="178" font-size="11.5" fill="var(--wire-red)" font-weight="600">3V3 → VCC (red)</text>
+      <path d="M60 134 C 20 300, 380 300, 466 172" fill="none" stroke="var(--wire-yel)" stroke-width="2.6"/>
+      <text x="255" y="285" font-size="11.5" fill="var(--wire-yel)" font-weight="600">D2 → DATA (yellow)</text>
+      <path d="M210 108 C 256 94, 400 104, 466 190" fill="none" stroke="var(--wire-blk)" stroke-width="2.6"/>
+      <text x="310" y="90" font-size="11.5" fill="var(--wire-blk)" font-weight="600">GND → GND (black)</text>
+    </svg>
+    <figcaption>Three wires, and the probe never touches the XIAO directly. Power the adapter from <strong>3V3, not 5V</strong>, so the data line stays at a safe logic level. Trust the labels printed on the adapter over wire colors — DFRobot-style probes have shipped more than one color scheme.</figcaption>
+  </figure>
+
+  <div class="step"><input type="checkbox" id="b2"><label for="b2"><strong>Probe → adapter.</strong> Strip the probe’s three leads ~5&nbsp;mm, twist, and clamp into the adapter’s screw terminals by its printed labels: red → VCC, yellow → DATA, black → GND. Tug each wire gently to confirm the clamp bit copper, not insulation.</label></div>
+  <div class="step"><input type="checkbox" id="b3"><label for="b3"><strong>Adapter → XIAO.</strong> With the DROK female-female jumpers: adapter VCC → XIAO <code>3V3</code>, adapter GND → XIAO <code>GND</code>, adapter DATA → XIAO <code>D2</code>.</label></div>
+  <div class="step"><input type="checkbox" id="b4"><label for="b4"><strong>Power from the computer and watch serial.</strong> <code>temp_ok</code> flips to <code>true</code> and <code>temperature_f</code> reads room temperature (~70–78&nbsp;°F). Pinch the steel tip: the reading climbs toward the mid-90s within a couple of cycles. Let go: it falls back.</label></div>
+  <div class="step"><input type="checkbox" id="b5"><label for="b5"><strong>Confirm the Pi sees real temperatures</strong> in the <code>mosquitto_sub</code> window. The software half of the project is now completely done.</label></div>
+
+  <h3>B3 · Power chain on the bench</h3>
+  <div class="step"><input type="checkbox" id="b6"><label for="b6"><strong>Prep the DFR0559.</strong> Stick the thermal pad + cooling fin on the marked spot on the back. Place the included jumper on the <strong>ON</strong> position of the blue header — this enables the regulated 5&nbsp;V output.</label></div>
+  <div class="step"><input type="checkbox" id="b7"><label for="b7"><strong>Run the battery polarity ritual (Rule 1)</strong> with the meter. Only after the red-wire-lands-on-＋ check passes: plug the EEMB into the BAT JST socket (or screw its leads into the BAT terminal, red → +, black → −).</label></div>
+  <div class="step"><input type="checkbox" id="b8"><label for="b8"><strong>Charge it once, fully.</strong> Any micro-USB cable into the DFR0559’s USB&nbsp;IN. The CHG LED lights while charging; DONE lights when full (a first charge of a half-full cell typically takes 1–2&nbsp;h at 900&nbsp;mA).</label></div>
+  <div class="step"><input type="checkbox" id="b9"><label for="b9"><strong>Power the XIAO from the DFR0559.</strong> Unplug the computer from the XIAO (Rule 4). Run a 6-inch USB-A→C cable from DFR0559 <strong>USB&nbsp;OUT</strong> to the XIAO. Unplug the micro-USB charger. The node now runs on battery alone — verify messages keep arriving on the Pi (serial is gone; the Pi terminal is your window now).</label></div>
+  <div class="step"><input type="checkbox" id="b10"><label for="b10"><strong>V<sub>OC</sub>-test the panel in midday sun (Rule 2)</strong> and mark the + lead with a flag of tape while you’re there.</label></div>
+  <div class="step"><input type="checkbox" id="b11"><label for="b11"><strong>Connect the panel.</strong> Tin the lead ends (stranded wire frays in screw terminals), then clamp into <strong>SOLAR&nbsp;IN</strong>: + → +, − → −. In sun, CHG lights; the panel-reverse LED must stay dark.</label></div>
+  <div class="step"><input type="checkbox" id="b12"><label for="b12"><strong>48-hour windowsill soak.</strong> Park the whole breadboard rig where the panel gets real sun. Success = no gaps in the message stream and <code>boot_count</code> never restarts from 1. This is the go/no-go for soldering.</label></div>
+
+  <div class="callout info"><strong class="tag">Why the readings may look boring</strong>
+  On the bench, consecutive readings a few tenths apart are normal and good. If you see occasional <code>temp_ok: false</code>, a jumper is loose — fix it now while everything is still push-fit.</div>
+</section>
+
+<!-- ==================== PHASE C ==================== -->
+<section id="phase-c">
+  <h2><span class="pnum">PHASE C</span>The perfboard sled</h2>
+  <p class="sub">Everything moves onto one 8 × 12 cm perfboard — a removable “sled” that gets tested on the bench and then dropped into the enclosure as a unit. The XIAO is socketed, never soldered down, so you can always pull it to reflash.</p>
+
+  <figure>
+    <svg viewBox="0 0 880 470" role="img" aria-label="Perfboard sled layout, top view">
+      <!-- board -->
+      <rect x="70" y="40" width="600" height="400" rx="8" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+      <text x="80" y="32" font-size="12" fill="var(--muted)">ELEGOO 8 × 12 cm double-sided perfboard (component side)</text>
+      <!-- corner drill -->
+      <g fill="none" stroke="var(--muted)" stroke-width="1.3">
+        <circle cx="92" cy="62" r="6"/><circle cx="648" cy="62" r="6"/>
+        <circle cx="92" cy="418" r="6"/><circle cx="648" cy="418" r="6"/>
+      </g>
+      <text x="106" y="66" font-size="10.5" fill="var(--muted)">4 corner holes → box mounting (drill 3 mm if screwing down)</text>
+      <!-- DFR0559 -->
+      <rect x="120" y="100" width="240" height="130" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/>
+      <g fill="none" stroke="var(--accent)" stroke-width="1.3">
+        <circle cx="134" cy="114" r="5"/><circle cx="346" cy="114" r="5"/>
+        <circle cx="134" cy="216" r="5"/><circle cx="346" cy="216" r="5"/>
+      </g>
+      <text x="240" y="152" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">DFR0559</text>
+      <text x="240" y="170" text-anchor="middle" font-size="11" fill="var(--muted)">on its own M3 nylon pillars</text>
+      <text x="240" y="186" text-anchor="middle" font-size="11" fill="var(--muted)">(drill the 4 pillar holes to 3 mm)</text>
+      <!-- terminals annotations -->
+      <text x="120" y="92" font-size="10.5" fill="var(--muted)">SOLAR IN + BAT screw terminals face the gland wall ↓</text>
+      <rect x="366" y="120" width="52" height="26" rx="4" fill="none" stroke="var(--accent)" stroke-width="1.4"/>
+      <text x="392" y="137" text-anchor="middle" font-size="10" fill="var(--muted)">USB OUT</text>
+      <!-- battery -->
+      <rect x="120" y="280" width="210" height="120" rx="8" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+      <text x="225" y="330" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">EEMB LiPo</text>
+      <text x="225" y="348" text-anchor="middle" font-size="11" fill="var(--muted)">on neoprene foam pad,</text>
+      <text x="225" y="363" text-anchor="middle" font-size="11" fill="var(--muted)">zip-tied through 2 drilled slots</text>
+      <g stroke="var(--muted)" stroke-width="1.4">
+        <line x1="160" y1="276" x2="160" y2="404"/><line x1="290" y1="276" x2="290" y2="404"/>
+      </g>
+      <!-- XIAO socket -->
+      <rect x="480" y="270" width="120" height="140" rx="8" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+      <g fill="var(--ink)">
+        <circle cx="490" cy="292" r="2.4"/><circle cx="490" cy="310" r="2.4"/><circle cx="490" cy="328" r="2.4"/><circle cx="490" cy="346" r="2.4"/><circle cx="490" cy="364" r="2.4"/><circle cx="490" cy="382" r="2.4"/><circle cx="490" cy="398" r="2.4"/>
+        <circle cx="590" cy="292" r="2.4"/><circle cx="590" cy="310" r="2.4"/><circle cx="590" cy="328" r="2.4"/><circle cx="590" cy="346" r="2.4"/><circle cx="590" cy="364" r="2.4"/><circle cx="590" cy="382" r="2.4"/><circle cx="590" cy="398" r="2.4"/>
+      </g>
+      <text x="540" y="330" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">XIAO in</text>
+      <text x="540" y="347" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">female sockets</text>
+      <text x="540" y="428" text-anchor="middle" font-size="10.5" fill="var(--muted)">USB-C faces the DFR0559 · antenna corner clear of battery</text>
+      <!-- 3 pin header -->
+      <rect x="480" y="180" width="86" height="30" rx="4" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+      <g fill="var(--ink)"><circle cx="500" cy="195" r="2.6"/><circle cx="522" cy="195" r="2.6"/><circle cx="544" cy="195" r="2.6"/></g>
+      <text x="523" y="172" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="600">3-pin header → sensor adapter</text>
+      <!-- adapter floating -->
+      <rect x="690" y="150" width="140" height="100" rx="8" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <text x="760" y="188" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)">DROK adapter</text>
+      <text x="760" y="206" text-anchor="middle" font-size="10.5" fill="var(--muted)">foam-taped beside sled,</text>
+      <text x="760" y="221" text-anchor="middle" font-size="10.5" fill="var(--muted)">probe cable → screw side</text>
+      <line x1="566" y1="195" x2="686" y2="195" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <!-- underside wires legend -->
+      <g font-size="11.5">
+        <text x="700" y="300" fill="var(--wire-red)" font-weight="600">underside wiring (22 AWG):</text>
+        <text x="700" y="320" fill="var(--wire-red)">3V3 socket pin → header pin 1</text>
+        <text x="700" y="338" fill="var(--wire-blk)">GND socket pin → header pin 2</text>
+        <text x="700" y="356" fill="var(--wire-yel)">D2 socket pin → header pin 3</text>
+      </g>
+    </svg>
+    <figcaption>Sled layout, component side. The DFR0559’s screw terminals point toward the wall that will carry the cable glands, the XIAO’s USB-C faces the DFR0559 so the 6-inch cable makes a short loop, and its antenna corner stays away from the battery.</figcaption>
+  </figure>
+
+  <h3>C1 · Prepare the sled</h3>
+  <div class="step"><input type="checkbox" id="c1"><label for="c1"><strong>Dry-fit everything</strong> on the 8 × 12 board exactly as in the diagram and trace positions with a marker. Check the assembly also fits the enclosure floor with ~10&nbsp;mm to spare on the gland side (caliper: box interior ≈ 140 × 100&nbsp;mm at the floor).</label></div>
+  <div class="step"><input type="checkbox" id="c2"><label for="c2"><strong>Drill the sled.</strong> 3&nbsp;mm bit: the 4 DFR0559 pillar holes (transfer centers with the caliper from the board’s corner holes), 2 elongated slots (drill 2 holes, wiggle) either side of the battery outline, and open up the 4 sled corner holes to 3&nbsp;mm. Deburr with a twist of a larger bit.</label></div>
+
+  <h3>C2 · Solder the sled</h3>
+  <div class="step"><input type="checkbox" id="c3"><label for="c3"><strong>Sockets, using the XIAO as the jig.</strong> Cut two 7-way strips from the Ferwooh female sockets. Press them onto the XIAO’s header pins, insert the whole sandwich into the perfboard at the marked spot, solder the two end pins of each strip, pull the XIAO out, check the sockets sit flat, then solder the remaining pins.</label></div>
+  <div class="step"><input type="checkbox" id="c4"><label for="c4"><strong>3-pin sensor header.</strong> Solder a 3-pin male header (Glarks strip) at the marked spot. Label the three positions on the board with a paint pen or tape flag: <span class="mono">V · D · G</span>.</label></div>
+  <div class="step"><input type="checkbox" id="c5"><label for="c5"><strong>Underside wiring.</strong> Three 22&nbsp;AWG runs on the copper side, color-matched: red from the socket pin under <code>3V3</code> → header pin V; black from <code>GND</code> → header pin G; yellow from <code>D2</code> → header pin D. Route flat, solder, trim. (Find the right socket pins by seating the XIAO and following its pin labels — <code>3V3</code> is the third pin down on the USB-right side, per the Phase B diagram.)</label></div>
+  <div class="step"><input type="checkbox" id="c6"><label for="c6"><strong>Continuity check before anything powers up.</strong> Meter in beep mode, XIAO removed: V↔3V3-socket beeps, G↔GND-socket beeps, D↔D2-socket beeps, and <em>no</em> beep between any two of V/D/G, and no beep from any of them to an adjacent unused socket pin.</label></div>
+  <div class="step"><input type="checkbox" id="c7"><label for="c7"><strong>Mount the DFR0559</strong> on its included M3 nylon pillars and screws through the four drilled holes. Nut-side under the sled if the pillar set is male-female; either way the board ends up ~10&nbsp;mm proud of the sled.</label></div>
+  <div class="step"><input type="checkbox" id="c8"><label for="c8"><strong>Mount the battery.</strong> Adhesive neoprene foam pad on the sled, battery on the pad, small zip tie through the two slots over the battery — snug, never crushing, with the lead exiting toward the DFR0559’s BAT terminal. Foam between tie and cell if it presses on the pouch edge.</label></div>
+  <div class="step"><input type="checkbox" id="c9"><label for="c9"><strong>Mount the DROK adapter</strong> on its own foam pad beside the 3-pin header. Connect adapter pins to the sled header with the three F-F jumpers (or three soldered wires + heat shrink for permanence — jumpers are fine inside a sealed box if you push them fully home).</label></div>
+
+  <h3>C3 · Sled system test</h3>
+  <div class="step"><input type="checkbox" id="c10"><label for="c10"><strong>Reassemble the full system on the sled:</strong> seat the XIAO (USB-C toward the DFR0559, antenna attached), battery JST in, 6-inch USB cable USB&nbsp;OUT → XIAO, probe into the adapter screw terminals, panel leads into SOLAR&nbsp;IN.</label></div>
+  <div class="step"><input type="checkbox" id="c11"><label for="c11"><strong>Repeat the soak.</strong> Same windowsill, 24&nbsp;h minimum this time. Same pass bar: unbroken stream, monotonic <code>boot_count</code>, sane temperatures. Only a passing sled goes into the box.</label></div>
+
+  <div class="callout tip"><strong class="tag">Why a sled at all</strong>
+  Nothing is ever soldered, glued, or screwed to the enclosure except the sled’s four corners and two glands. Every future repair — new battery in a few years, swapped probe, reflash — is “open lid, undo four screws, lift the whole works out onto the bench.”</div>
+</section>
+
+<!-- ==================== PHASE D ==================== -->
+<section id="phase-d">
+  <h2><span class="pnum">PHASE D</span>Into the enclosure</h2>
+  <p class="sub">Two holes, two glands, one sled. The box mounts vertically in shade with the glands facing straight down, so drilling happens on one of the 150 × 70 mm side faces — that face becomes “the bottom.”</p>
+
+  <figure>
+    <svg viewBox="0 0 880 522" role="img" aria-label="Enclosure interior layout and gland drilling positions">
+      <!-- interior top view -->
+      <rect x="70" y="40" width="540" height="396" rx="10" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+      <text x="80" y="30" font-size="12" fill="var(--muted)">LeMotech 150 × 110 × 70 mm — looking into the open box (lid off)</text>
+      <g fill="none" stroke="var(--muted)" stroke-width="1.3">
+        <circle cx="88" cy="58" r="7"/><circle cx="592" cy="58" r="7"/><circle cx="88" cy="418" r="7"/><circle cx="592" cy="418" r="7"/>
+      </g>
+      <!-- sled inside -->
+      <rect x="120" y="80" width="432" height="288" rx="6" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-dasharray="7 5"/>
+      <text x="336" y="104" text-anchor="middle" font-size="12.5" fill="var(--accent)" font-weight="600">sled (8 × 12 cm) — corners on foam pads or M3 screws</text>
+      <rect x="150" y="130" width="180" height="100" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+      <text x="240" y="185" text-anchor="middle" font-size="12" fill="var(--ink)" font-weight="600">DFR0559</text>
+      <rect x="150" y="255" width="150" height="85" rx="6" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+      <text x="225" y="302" text-anchor="middle" font-size="12" fill="var(--ink)">battery</text>
+      <rect x="400" y="255" width="100" height="100" rx="6" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+      <text x="450" y="300" text-anchor="middle" font-size="12" fill="var(--ink)">XIAO</text>
+      <rect x="400" y="150" width="110" height="70" rx="6" fill="none" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="4 4"/>
+      <text x="455" y="180" text-anchor="middle" font-size="11" fill="var(--ink)">DROK</text>
+      <text x="455" y="196" text-anchor="middle" font-size="11" fill="var(--ink)">adapter</text>
+      <path d="M330 180 C 370 180, 370 240, 405 265" fill="none" stroke="var(--muted)" stroke-width="2"/>
+      <text x="368" y="238" font-size="10.5" fill="var(--muted)">USB coil</text>
+      <!-- glands on bottom edge -->
+      <circle cx="270" cy="436" r="16" fill="var(--bg)" stroke="var(--ink)" stroke-width="2"/>
+      <circle cx="410" cy="436" r="16" fill="var(--bg)" stroke="var(--ink)" stroke-width="2"/>
+      <text x="270" y="502" text-anchor="middle" font-size="11.5" fill="var(--ink)" font-weight="600">PG7 — solar lead</text>
+      <text x="410" y="502" text-anchor="middle" font-size="11.5" fill="var(--ink)" font-weight="600">PG7 — probe cable</text>
+      <!-- wires to glands -->
+      <path d="M175 232 C 124 300, 128 400, 266 420" fill="none" stroke="var(--wire-red)" stroke-width="2"/>
+      <path d="M405 222 C 370 280, 372 380, 408 420" fill="none" stroke="var(--wire-yel)" stroke-width="2"/>
+      <!-- side face drill guide -->
+      <rect x="650" y="120" width="200" height="107" rx="6" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+      <text x="750" y="105" text-anchor="middle" font-size="12" fill="var(--muted)">bottom face (150 × 70), from outside</text>
+      <circle cx="723" cy="177" r="12" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+      <circle cx="777" cy="177" r="12" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+      <g stroke="var(--muted)" stroke-width="1.1">
+        <line x1="650" y1="245" x2="723" y2="245"/><line x1="723" y1="240" x2="723" y2="250"/>
+        <line x1="650" y1="250" x2="650" y2="240"/>
+      </g>
+      <text x="686" y="262" text-anchor="middle" font-size="10.5" fill="var(--muted)">55 mm</text>
+      <g stroke="var(--muted)" stroke-width="1.1">
+        <line x1="723" y1="270" x2="777" y2="270"/><line x1="777" y1="265" x2="777" y2="275"/><line x1="723" y1="265" x2="723" y2="275"/>
+      </g>
+      <text x="750" y="287" text-anchor="middle" font-size="10.5" fill="var(--muted)">40 mm apart · Ø12.5 mm holes</text>
+      <text x="750" y="320" text-anchor="middle" font-size="10.5" fill="var(--muted)">centered on the face’s depth,</text>
+      <text x="750" y="335" text-anchor="middle" font-size="10.5" fill="var(--muted)">biased toward the lid side —</text>
+      <text x="750" y="350" text-anchor="middle" font-size="10.5" fill="var(--muted)">dry-fit gland + locknut vs. sled first</text>
+      <!-- drip loop -->
+      <path d="M245 452 q -8 30 8 34 q 16 4 14 -16" fill="none" stroke="var(--wire-red)" stroke-width="2"/>
+      <path d="M385 452 q -8 30 8 34 q 16 4 14 -16" fill="none" stroke="var(--wire-yel)" stroke-width="2"/>
+      <text x="352" y="518" text-anchor="middle" font-size="11" fill="var(--muted)">drip loops hang below both glands, outside</text>
+    </svg>
+    <figcaption>Glands live on the downward face, cables leave through drip loops, and every serviceable part sits on the removable sled. The lid’s inner surface is where the Wi-Fi antenna gets taped — plastic box, so the signal passes straight through.</figcaption>
+  </figure>
+
+  <h3>D1 · Drill</h3>
+  <div class="step"><input type="checkbox" id="d1"><label for="d1"><strong>Pick the bottom face and mark two centers.</strong> With the sled dry-fitted inside, hold a gland with its locknut against the chosen 150 × 70 face and confirm the locknut will clear the sled and the box floor. Mark centers roughly 55&nbsp;mm and 95&nbsp;mm from one end (40&nbsp;mm apart), on the lid side of the face’s centerline. Center-punch both.</label></div>
+  <div class="step"><input type="checkbox" id="d2"><label for="d2"><strong>Drill Ø12.5&nbsp;mm.</strong> Pilot at 3&nbsp;mm, then step-bit to 12.5&nbsp;mm (or 1/2″). ABS drills fast — light pressure, back the inside with a wood scrap, stop at the step. Deburr both sides; shavings out of the box.</label></div>
+  <div class="step"><input type="checkbox" id="d3"><label for="d3"><strong>Install both PG7 glands.</strong> Body from outside, gasket against the wall, locknut inside. Hand-tight plus a quarter turn with pliers. Leave the caps loose for now.</label></div>
+
+  <h3>D2 · Mount the sled</h3>
+  <div class="step"><input type="checkbox" id="d4"><label for="d4"><strong>Choose the fastening.</strong> Default: four squares of adhesive neoprene foam under the sled corners plus a bead of hot glue along two sled edges — strong, vibration-damping, removable with a putty knife. Stronger option: drill the box back at the sled’s corner holes and bolt through with M3 screws + a dab of silicone on each head outside (the back sits against the mounting surface, but seal the penetrations anyway).</label></div>
+  <div class="step"><input type="checkbox" id="d5"><label for="d5"><strong>Fix the sled</strong> with the DFR0559’s screw terminals facing the gland wall. Confirm nothing rocks.</label></div>
+  <div class="step"><input type="checkbox" id="d6"><label for="d6"><strong>Tape the antenna to the inside of the lid</strong> (its back is adhesive), positioned over the XIAO’s corner of the box, away from the battery. Leave enough U.FL pigtail slack that the lid can open without yanking the connector.</label></div>
+
+  <h3>D3 · Cable up and close</h3>
+  <div class="step"><input type="checkbox" id="d7"><label for="d7"><strong>Solar lead in through gland 1.</strong> Feed enough for a 15&nbsp;cm service loop inside, clamp into SOLAR&nbsp;IN (+/− as flagged in Phase B), then tighten the gland cap until the cable won’t slide when tugged.</label></div>
+  <div class="step"><input type="checkbox" id="d8"><label for="d8"><strong>Probe cable in through gland 2</strong> → DROK adapter screw terminals (red/yellow/black by label). Service loop inside, then tighten the cap. The DS18B20 cable is ~4&nbsp;mm — right in the PG7’s range.</label></div>
+  <div class="step"><input type="checkbox" id="d9"><label for="d9"><strong>Final connections in order:</strong> battery JST → BAT (polarity LED dark), jumper still on ON, USB cable USB&nbsp;OUT → XIAO. Watch the Pi terminal: messages flowing.</label></div>
+  <div class="step"><input type="checkbox" id="d10"><label for="d10"><strong>Optional but cheap insurance:</strong> toss a desiccant packet in the box (sealed boxes breathe with temperature swings; the gasket + downward glands handle liquid water, the desiccant handles the humidity that gets pumped in).</label></div>
+  <div class="step"><input type="checkbox" id="d11"><label for="d11"><strong>Close the lid</strong> — gasket seated, four screws snug (not gorilla-tight; ABS strips). Then compare <code>wifi_rssi_dbm</code> with the lid on vs. off: expect only a few dB penalty. If it cratered, re-route the antenna on the lid and check it didn’t end up pressed against the battery or the DFR0559’s fin.</label></div>
+</section>
+
+<!-- ==================== PHASE E ==================== -->
+<section id="phase-e">
+  <h2><span class="pnum">PHASE E</span>Roof install</h2>
+  <p class="sub">Temporary first. Nothing gets fastened permanently until Wi-Fi and charging are proven from the actual spot.</p>
+
+  <h3>E1 · Trial placement (a sunny morning)</h3>
+  <div class="step"><input type="checkbox" id="e1"><label for="e1"><strong>Place, don’t mount.</strong> Enclosure in its intended shaded spot (under/behind a collector edge or nearby eave), panel laid in full sun facing roughly south, probe resting beside the Pentair solar sensor. Weigh things down; nothing attached yet.</label></div>
+  <div class="step"><input type="checkbox" id="e2"><label for="e2"><strong>Watch an hour of data.</strong> RSSI from the roof typically lands in the −60s to −70s; steady publishes every 5 minutes (switch <code>TEST_MODE</code> to 0 and reflash before this if you haven’t). CHG LED on in sun. If RSSI is marginal (worse than about −80) or publishes drop, try re-aiming the lid/antenna face toward the house before considering a mesh node or the external-antenna C6 route (§8).</label></div>
+  <div class="step"><input type="checkbox" id="e3"><label for="e3"><strong>Run several days like this</strong> — the design doc’s own advice. Weather it through at least one marine-layer morning before committing screws and adhesive.</label></div>
+
+  <h3>E2 · Permanent mounting</h3>
+  <div class="step"><input type="checkbox" id="e4"><label for="e4"><strong>Enclosure:</strong> strap or screw it to existing collector framing / racking — not through the roof surface. The box’s molded ears (or a stainless pipe strap around a rack member) both work. Glands point down; box fully in shade.</label></div>
+  <div class="step"><input type="checkbox" id="e5"><label for="e5"><strong>Panel:</strong> the Qiilu panel is frameless epoxy with no holes, so bond it: outdoor VHB tape or a bead of outdoor silicone onto a small aluminum or PVC plate, and fasten <em>the plate</em> to the rack with UV zip ties or screws. Face south, tilted roughly at the roof pitch; anywhere that gets full midday sun and doesn’t shade the collectors. The second panel stays in a drawer as the spare.</label></div>
+  <div class="step"><input type="checkbox" id="e6"><label for="e6"><strong>Probe:</strong> beside the Pentair sensor — same surface, same orientation, same sun. Secure the cable, not the sensing tip: a UV tie or clip an inch or two up the lead, tip resting in free air/contact exactly like its neighbor. Not touching a collector, pipe, or valve; not under tape or insulation.</label></div>
+  <div class="step"><input type="checkbox" id="e7"><label for="e7"><strong>Dress the cables:</strong> UV ties every ~30&nbsp;cm along existing framing, drip loops below both glands preserved, no cable spanning open air where wind can flex it.</label></div>
+
+  <div class="callout warn"><strong class="tag">Battery heat</strong>
+  The enclosure must not sit in direct rooftop sun — a sealed dark box in full sun can exceed the LiPo’s comfort zone even with the DFR0559’s electrical protections (it does not monitor battery temperature). Shade is a hard requirement, and it’s why the white box was chosen over your black spares.</div>
+</section>
+
+<!-- ==================== COMMISSIONING ==================== -->
+<section id="commissioning">
+  <h2><span class="pnum">6</span>Commissioning &amp; the comparison test</h2>
+  <p class="sub">The point of the whole project: log the independent probe next to what the EasyTouch believes.</p>
+
+  <h3>Log these on one timeline</h3>
+  <div class="tblwrap"><table>
+    <tr><th>Series</th><th>Source</th></tr>
+    <tr><td>Rooftop DS18B20 (this build)</td><td><code>pool/solar-roof/temperature</code> via MQTT</td></tr>
+    <tr><td>EasyTouch “Solar Temp”</td><td>existing EasyTouch / RS-485 setup on the Pi</td></tr>
+    <tr><td>Air temperature</td><td>EasyTouch air sensor (or any independent source)</td></tr>
+    <tr><td>Pool water temperature</td><td>EasyTouch</td></tr>
+    <tr><td>Solar valve + pump state</td><td>EasyTouch / RS-485, when available</td></tr>
+  </table></div>
+
+  <h3>How to read the comparison</h3>
+  <div class="tblwrap"><table>
+    <tr><th>Window</th><th>Expect</th><th>If not…</th></tr>
+    <tr><td>Stable midday sun</td><td>The two roof readings track within a consistent offset</td><td>A steady offset is calibration/mounting — note it and move on; it doesn’t block the project</td></tr>
+    <tr><td>Early-morning warm-up</td><td>DS18B20 may lead or lag slightly (different thermal mass)</td><td>Large lag → probe is shaded differently or heat-sunk by its mount</td></tr>
+    <tr><td>Passing clouds</td><td>Brief divergence, re-converging in minutes</td><td>Persistent divergence → placement problem</td></tr>
+    <tr><td>Afternoon cool-down</td><td>Smooth parallel decline</td><td>Erratic jumps on either trace → sensor or connection fault</td></tr>
+  </table></div>
+
+  <div class="callout info"><strong class="tag">Health metrics that ride along free</strong>
+  <code>boot_count</code> restarting from 1 → the node lost power (battery ran out — check panel shading/charging). Slowly sagging <code>wifi_rssi_dbm</code> → something changed in the RF path. A stuck-but-publishing <code>temperature_f</code> with <code>temp_ok: true</code> → probe reading but thermally decoupled (check its mount).</div>
+
+  <p>Feeding this value back into Pentair control logic stays a separate, later project — EasyTouch’s solar input is a physical 10&nbsp;kΩ thermistor, and this node deliberately doesn’t touch it. (The spare AR-PRO 520272 thermistors from May 2024 are for <em>that</em> future project, not this one.)</p>
+</section>
+
+<!-- ==================== TROUBLESHOOTING ==================== -->
+<section id="troubleshooting">
+  <h2><span class="pnum">7</span>Troubleshooting</h2>
+  <div class="tblwrap"><table>
+    <tr><th>Symptom</th><th>Most likely cause → fix</th></tr>
+    <tr><td>No serial port after flashing deep-sleep code</td><td>The C3 is asleep when you plug in. Hold <strong>B</strong> (BOOT), plug USB while holding, release → bootloader mode → upload.</td></tr>
+    <tr><td><code>temperature_f: -196.6</code> / <code>temp_ok: false</code></td><td>1-Wire not answering: swapped DATA/VCC at the screw terminal, wire clamped on insulation, or DATA not on D2. Re-check against the printed adapter labels.</td></tr>
+    <tr><td>Readings appear but are occasionally garbage</td><td>Loose jumper or cold solder joint on the D2 run — reflow; keep the probe lead away from the USB cable coil.</td></tr>
+    <tr><td>Wi-Fi never connects</td><td>2.4&nbsp;GHz network? Antenna clicked on and taped to the lid? RSSI &lt; −85 at the roof spot → re-aim lid, relocate box within its shade, or see the C6 note in §8.</td></tr>
+    <tr><td>Publishes but Pi shows nothing</td><td>Broker bound to localhost (redo A1 step 2), wrong <code>MQTT_HOST</code> IP, or Pi firewall on 1883.</td></tr>
+    <tr><td>No 5 V at USB OUT</td><td>ON/OFF jumper missing or on OFF — it ships loose in the bag. Then check battery is charged (CHG/DONE LEDs).</td></tr>
+    <tr><td>CHG LED never lights in sun</td><td>Panel backwards (reverse LED will say so), V<sub>OC</sub> test skipped, panel actually shaded, or leads not biting in the screw terminal (tin them).</td></tr>
+    <tr><td>Battery drains over cloudy stretches</td><td>Confirm <code>TEST_MODE 0</code> (15&nbsp;s cycles cost 20× the power), check the 20&nbsp;s timeout is actually firing when Wi-Fi is down (watch a cycle with the router off), verify panel isn’t shaded by afternoon.</td></tr>
+    <tr><td><code>boot_count</code> resets from 1 unexpectedly</td><td>Power interruption: battery hit cutoff or a connector is intermittent. Check JST seating and battery voltage at the BAT terminal (healthy: 3.5–4.2&nbsp;V).</td></tr>
+    <tr><td>Condensation inside the box</td><td>Swap in a fresh desiccant packet; confirm glands are tight and on the downward face; consider adding an IP-rated M12 vent plug in a spare drilled hole.</td></tr>
+  </table></div>
+</section>
+
+<!-- ==================== APPENDIX ==================== -->
+<section id="appendix">
+  <h2><span class="pnum">8</span>Appendix</h2>
+
+  <h3>Wiring quick reference</h3>
+  <div class="grid2">
+    <div class="tblwrap"><table>
+      <tr><th colspan="2">Power path</th></tr>
+      <tr><td>Panel + / −</td><td>DFR0559 SOLAR IN + / − (screw terminal)</td></tr>
+      <tr><td>EEMB LiPo</td><td>DFR0559 BAT (JST socket or screw terminal) — nowhere else, ever</td></tr>
+      <tr><td>DFR0559 USB OUT (USB-A)</td><td>→ 6″ cable → XIAO USB-C</td></tr>
+      <tr><td>DFR0559 USB IN (micro-USB)</td><td>bench charging only</td></tr>
+      <tr><td>Blue header jumper</td><td>ON</td></tr>
+    </table></div>
+    <div class="tblwrap"><table>
+      <tr><th colspan="2">Sensor path</th></tr>
+      <tr><td>Probe red</td><td>adapter VCC (screw side)</td></tr>
+      <tr><td>Probe yellow</td><td>adapter DATA</td></tr>
+      <tr><td>Probe black</td><td>adapter GND</td></tr>
+      <tr><td>Adapter VCC / DATA / GND</td><td>XIAO 3V3 / D2 (GPIO4) / GND</td></tr>
+      <tr><td>Pull-up resistor</td><td>already on the adapter — add nothing</td></tr>
+    </table></div>
+  </div>
+
+  <h3>MQTT payload schema</h3>
+<pre><code>topic: pool/solar-roof/temperature   (retained)
+
+{
+  "sensor": "roof-solar-reference",
+  "temperature_f": 118.4,
+  "temp_ok": true,
+  "wifi_rssi_dbm": -67,
+  "boot_count": 1532
+}</code></pre>
+  <p>The Pi timestamps on receipt. Battery voltage is deliberately absent — the DFR0559 manages the cell but exposes no state-of-charge signal; adding a fuel gauge is a possible future mod, and <code>boot_count</code> resets already catch the failure case that matters.</p>
+
+  <h3>If you ever swap in one of your XIAO ESP32-C6 boards</h3>
+  <p>You own three (Aug 18 order) and the sled’s sockets accept them directly. Three differences: <strong>(1)</strong> the sketch’s <code>D2</code> macro still lands on the right pin, but it’s GPIO2 there, not GPIO4 — never hardcode the number. <strong>(2)</strong> The C6 has an onboard ceramic antenna, used by default; nothing to attach. To force the external U.FL instead, enable the RF switch and select it in <code>setup()</code>: set GPIO3 LOW, then GPIO14 HIGH (LOW = built-in). <strong>(3)</strong> Deep-sleep draw is ~15&nbsp;µA vs the C3’s ~44&nbsp;µA — irrelevant next to the DFR0559’s ~1&nbsp;mA quiescent, so don’t swap for that reason; swap only if the C3 dies or you want the antenna flexibility.</p>
+
+  <h3>Reference documents</h3>
+  <ul>
+    <li>DFRobot DFR0559 wiki &amp; datasheet — connector map, LED meanings, protection specs</li>
+    <li>Seeed XIAO ESP32-C3 / ESP32-C6 getting-started wikis — pinouts, deep sleep, antenna handling</li>
+    <li>Original design doc: <code>docs/solar_powered_roof_temperature_sensor.md</code> (architecture &amp; rationale — kept as the spec; this guide is the build procedure)</li>
+    <li>Pentair EasyTouch installation guide, solar-temperature-sensor section</li>
+  </ul>
+
+  <div class="footer">
+    Build guide generated Aug 30, 2026 · checkboxes save locally in this browser<span class="noprint"> · <button id="resetBtn" style="font:inherit;color:var(--info);background:none;border:none;padding:0;cursor:pointer;text-decoration:underline">reset all checkboxes</button></span>
+  </div>
+</section>
+
+</div>
+<script>
+(function(){
+  var KEY="solar-sensor-guide-v1";
+  var state={};
+  try{ state=JSON.parse(localStorage.getItem(KEY)||"{}"); }catch(e){ state={}; }
+  var boxes=document.querySelectorAll('.step input[type=checkbox]');
+  boxes.forEach(function(b){
+    if(state[b.id]) b.checked=true;
+    b.addEventListener('change',function(){
+      state[b.id]=b.checked;
+      try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){}
+    });
+  });
+  var rb=document.getElementById('resetBtn');
+  if(rb) rb.addEventListener('click',function(){
+    if(!confirm('Clear all checked steps?')) return;
+    state={};
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    boxes.forEach(function(b){ b.checked=false; });
+  });
+})();
+</script>
+</body>
+</html>
