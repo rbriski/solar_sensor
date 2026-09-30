@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "solar_sensor",
+  "project_id": "f6be35bb-e626-48ef-b925-5ebae2a60378"
+}
