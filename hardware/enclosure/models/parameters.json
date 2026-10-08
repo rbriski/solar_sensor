@@ -1,0 +1,27 @@
+{
+  "revision": "body4-tray5-arm6",
+  "outer_x": 164.0,
+  "outer_y": 152.0,
+  "base_height": 42.0,
+  "wall": 2.4,
+  "floor": 3.0,
+  "corner_radius": 14.0,
+  "lid_thickness": 4.0,
+  "gland_hole": 13.2,
+  "gland_centres_y": [
+    38.0,
+    78.0
+  ],
+  "gland_centre_z": 16.0,
+  "ring_id": 158.42,
+  "ring_section": 2.62,
+  "ring_size": "AS568-164",
+  "groove_x": 144.0,
+  "groove_y": 132.0,
+  "groove_radius": 22.0,
+  "groove_width": 3.8,
+  "groove_depth": 2.0,
+  "panel_air_gap": 25.0,
+  "perfboard_thickness_assumed": 1.5,
+  "tray_thickness": 2.4
+}

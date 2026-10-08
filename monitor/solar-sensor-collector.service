@@ -1,0 +1,14 @@
+[Unit]
+Description=Solar roof sensor HTTPS ingestion and live status
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=@PYTHON@ @COLLECTOR@ --config @CONFIG@
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=default.target

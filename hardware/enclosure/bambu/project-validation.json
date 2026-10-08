@@ -1,0 +1,115 @@
+{
+  "slicer": "Bambu Studio 2.8.2.61",
+  "all_plates_sliced": true,
+  "plate_count": 4,
+  "object_count": 13,
+  "temperature_commands": {
+    "Metadata/plate_3.gcode": {
+      "nozzle": [
+        0.0,
+        140.0,
+        160.0,
+        200.0,
+        240.0
+      ],
+      "bed": [
+        0.0,
+        75.0,
+        80.0
+      ],
+      "flush": [
+        240.0
+      ]
+    },
+    "Metadata/plate_4.gcode": {
+      "nozzle": [
+        0.0,
+        140.0,
+        160.0,
+        200.0,
+        240.0
+      ],
+      "bed": [
+        0.0,
+        75.0,
+        80.0
+      ],
+      "flush": [
+        240.0
+      ]
+    },
+    "Metadata/plate_2.gcode": {
+      "nozzle": [
+        0.0,
+        140.0,
+        160.0,
+        200.0,
+        240.0
+      ],
+      "bed": [
+        0.0,
+        75.0,
+        80.0
+      ],
+      "flush": [
+        240.0
+      ]
+    },
+    "Metadata/plate_1.gcode": {
+      "nozzle": [
+        0.0,
+        140.0,
+        160.0,
+        200.0,
+        240.0
+      ],
+      "bed": [
+        0.0,
+        75.0,
+        80.0
+      ],
+      "flush": [
+        240.0
+      ]
+    }
+  },
+  "setup": {
+    "printer": "Bambu Lab X2D",
+    "nozzle_mm": 0.4,
+    "bed": "Textured PEI"
+  },
+  "limitations": [
+    "0.4 mm standard nozzle and Textured PEI are stated setup assumptions.",
+    "Settings match the supplied white PETG label; no physical flow calibration is claimed.",
+    "Interactive GUI not tested; project is reopened and sliced with native Bambu CLI.",
+    "Native offscreen thumbnails failed; included thumbnails are rendered from the actual CAD and plate manifest.",
+    "Console diagnostics for stock reserved T65279/T65535 remain; machine G-code was not altered."
+  ],
+  "estimates": [
+    {
+      "plate": 1,
+      "seconds": 36208,
+      "grams": 199.6
+    },
+    {
+      "plate": 2,
+      "seconds": 19308,
+      "grams": 99.8
+    },
+    {
+      "plate": 3,
+      "seconds": 8468,
+      "grams": 42.0
+    },
+    {
+      "plate": 4,
+      "seconds": 12457,
+      "grams": 63.0
+    }
+  ],
+  "sha256": "a90793d75ea66af6756984cce795186afd8d0d1f7b4fd7fe8b2766d422e10c11",
+  "reopened_and_resliced": true,
+  "roundtrip_settings_preserved": true,
+  "roundtrip_temperature_audit": "Maximum nozzle/flush 240 C; bed 80/75 C",
+  "embedded_meshes_match_current_STLs": true
+}

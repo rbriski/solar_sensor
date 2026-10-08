@@ -1,0 +1,10 @@
+{
+  "scope": "Optional mounting example, four self-tapping saddles only",
+  "sha256": "347d616d2f1e22dc85f05de9ea4ebe6ccd08aeb7121108e162e81eded9eafec1",
+  "embedded_meshes_match_current_saddle_STL": true,
+  "object_count": 4,
+  "plate_count": 1,
+  "printer": "Bambu Lab X2D",
+  "nozzle_temperature_c": 240,
+  "note": "Original validated saddle project retained; renamed without modifying geometry or settings."
+}

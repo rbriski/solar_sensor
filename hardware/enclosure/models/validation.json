@@ -1,0 +1,142 @@
+{
+  "revision": "body4-tray5-arm6",
+  "parts": {
+    "base": {
+      "count": 1,
+      "valid_solid": true,
+      "watertight_mesh": true,
+      "dimensions_mm": [
+        191.0,
+        176.0,
+        42.0
+      ],
+      "volume_mm3": 187039.4,
+      "triangles": 20882
+    },
+    "lid": {
+      "count": 1,
+      "valid_solid": true,
+      "watertight_mesh": true,
+      "dimensions_mm": [
+        164.0,
+        152.0,
+        7.0
+      ],
+      "volume_mm3": 100845.2,
+      "triangles": 4628
+    },
+    "tray": {
+      "count": 1,
+      "valid_solid": true,
+      "watertight_mesh": true,
+      "dimensions_mm": [
+        134.0,
+        122.0,
+        12.4
+      ],
+      "volume_mm3": 40875.8,
+      "triangles": 17940
+    },
+    "panel_frame": {
+      "count": 1,
+      "valid_solid": true,
+      "watertight_mesh": true,
+      "dimensions_mm": [
+        164.0,
+        162.0,
+        6.0
+      ],
+      "volume_mm3": 42595.7,
+      "triangles": 5776
+    },
+    "panel_spacer": {
+      "count": 4,
+      "valid_solid": true,
+      "watertight_mesh": true,
+      "dimensions_mm": [
+        10.0,
+        9.997,
+        25.0
+      ],
+      "volume_mm3": 1735.8,
+      "triangles": 1008
+    },
+    "panel_clip": {
+      "count": 4,
+      "valid_solid": true,
+      "watertight_mesh": true,
+      "dimensions_mm": [
+        12.0,
+        10.0,
+        3.0
+      ],
+      "volume_mm3": 313.9,
+      "triangles": 1040
+    },
+    "probe_arm": {
+      "count": 1,
+      "valid_solid": true,
+      "watertight_mesh": true,
+      "dimensions_mm": [
+        160.0,
+        20.0,
+        4.0
+      ],
+      "volume_mm3": 10606.8,
+      "triangles": 4652
+    }
+  },
+  "clearances": {
+    "printed_part_collision_check": "passed; pairwise intersection < 0.01 mm3",
+    "hardware_envelopes_vs_printed_parts": "passed; no volume intersections",
+    "gland_locknut_24mm_envelopes": "passed; floor/rim/tray clear",
+    "usb_service_bay_mm": 45,
+    "tray_to_throat_per_side_mm": 1.0,
+    "lid_locator_to_throat_per_side_mm": 0.4
+  },
+  "assumptions": [
+    "Perfboard thickness modeled 1.5 mm; hole centers 66 x 26 mm. Builder confirmed fit; measure substitute boards.",
+    "Panel clips overlap 1 mm of its edge; check the inactive border before tightening.",
+    "PG7 nut clearance uses a conservative 24 mm diameter envelope, not a measured nut.",
+    "Digital checks do not establish weatherproofing, roof anchorage, or thermal safety."
+  ],
+  "gasket": {
+    "part": "AS568-164, EPDM 70, e.g. Global O-Ring E70164",
+    "id_mm": 158.42,
+    "section_mm": 2.62,
+    "groove_centreline_perimeter_mm": 514.23,
+    "neutral_axis_stretch_percent": 1.64,
+    "nominal_squeeze_percent": 23.66,
+    "nominal_gland_fill_percent": 70.94,
+    "groove_width_mm": 3.8,
+    "groove_depth_mm": 2,
+    "qualification": "nominal geometry only; manufactured dimensions and seal test still required"
+  },
+  "board_fasteners": {
+    "perfboard": {
+      "screw": "M1.7 x 6 self-tapping",
+      "stack_mm": 1.5,
+      "pilot_diameter_mm": 1.3,
+      "pilot_depth_mm": 5.3,
+      "penetration_including_point_mm": 4.5,
+      "tip_clearance_mm": 0.8
+    },
+    "dfrobot": {
+      "screw": "M3 x 5 self-tapping",
+      "stack_mm": 1.6,
+      "pilot_diameter_mm": 2.6,
+      "pilot_depth_mm": 5.0,
+      "penetration_including_point_mm": 3.4,
+      "tip_clearance_mm": 1.6
+    },
+    "tray": {
+      "screw": "M3 x 6 self-tapping",
+      "stack_mm": 2.4,
+      "pilot_diameter_mm": 2.6,
+      "pilot_depth_mm": 4.0,
+      "penetration_including_point_mm": 3.6,
+      "tip_clearance_mm": 0.4
+    }
+  },
+  "board_fasteners_note": "Diameters recalled by original builder; lengths derived from modeled board/tray thickness. Tray clearance is only 0.4 mm; verify actual screw length and print. Match thread family to pilot."
+}

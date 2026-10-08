@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 800" role="img" aria-labelledby="title desc">
+<title id="title">Complete solar temperature and battery-voltage circuit</title><desc id="desc">Solar panel and battery feed DFR0559; USB OUT powers C6. Probe connects through TB1 at W7/W8/W9 and uses D2, 3V3 and GND with 4.7k pull-up. BAT IN positive also feeds removable J1 then 100k R1, A0 sense junction, 100k R2 to C6 ground and 100nF capacitor to C6 ground. BAT negative has no added direct link to C6 ground.</desc>
+<style>text{font:16px sans-serif;fill:#203646}.title{font-size:22px;font-weight:bold}.small{font-size:13px}.wire{fill:none;stroke-width:3;stroke-linejoin:round}.red{stroke:#c83d3d}.gnd{stroke:#334155}.data{stroke:#b77900}.adc{stroke:#7354a4}.bat{stroke:#d35a20}</style>
+<rect width="1120" height="800" fill="white"/><text x="30" y="35" class="title">Full schematic · probe + optional battery sensing</text>
+<rect x="35" y="65" width="205" height="85" rx="8" fill="#edf4e8" stroke="#758466"/><text x="50" y="95">Solar panel</text><text x="50" y="120" class="small">SOLAR + and − kept separate</text>
+<rect x="35" y="180" width="205" height="85" rx="8" fill="#fff0df" stroke="#b58b52"/><text x="50" y="208">3.7 V LiPo battery</text><text x="50" y="232" class="small">Red + / black −</text>
+<rect x="380" y="65" width="300" height="200" rx="8" fill="#edf4e8" stroke="#758466"/><text x="400" y="95" class="title">DFRobot DFR0559</text><text x="400" y="125">SOLAR IN + / −</text><text x="400" y="207">BAT IN + / −</text><text x="400" y="241" class="small">Verify screw-terminal polarity</text>
+<path d="M240 105 H380" class="wire red"/><path d="M240 130 H380" class="wire gnd"/><text x="250" y="99" class="small">+</text><text x="250" y="147" class="small">−</text>
+<path d="M240 195 H380" class="wire bat"/><path d="M240 230 H380" class="wire gnd"/><circle cx="305" cy="195" r="5" fill="#d35a20"/><path d="M305 195 V170" class="wire bat"/><text x="250" y="160" class="small">BAT_SENSE (+)</text>
+<rect x="835" y="65" width="240" height="645" rx="10" fill="#dfede7" stroke="#437569"/><text x="855" y="105" class="title">XIAO ESP32-C6</text><text x="855" y="160">USB-C</text><text x="855" y="330">3V3</text><text x="855" y="410">D2 / GPIO2</text><text x="855" y="515">D0 / A0 / GPIO0</text><text x="855" y="635">GND</text><text x="855" y="674" class="small">5V pin and BAT pads unused</text>
+<path d="M680 150 H835" fill="none" stroke="#12695b" stroke-width="9"/><text x="693" y="125" class="small">USB OUT → USB-C</text><text x="692" y="180" class="small">5 V + common ground</text>
+<rect x="35" y="300" width="205" height="150" rx="8" fill="#fff5df" stroke="#b59354"/><text x="50" y="325" class="title">DS18B20 probe</text><text x="50" y="351">RED · VCC</text><text x="50" y="390">YELLOW · DATA</text><text x="50" y="430">BLACK · GND</text>
+<rect x="300" y="315" width="160" height="135" rx="5" fill="#e1f0df" stroke="#356e42"/>
+<text x="300" y="298">TB1 · screw terminals</text>
+<text x="355" y="338" class="small">W8 · RED / 3V3</text>
+<text x="355" y="378" class="small">W7 · YELLOW / DATA</text>
+<text x="355" y="418" class="small">W9 · BLACK / GND</text>
+<path d="M240 345 H740 V325 H835" class="wire red"/>
+<path d="M240 385 H740 V405 H835" class="wire data"/>
+<path d="M240 425 H320 V630 H835" class="wire gnd"/>
+<path d="M510 345 V355 M510 375 V385" class="wire red"/><rect x="495" y="355" width="30" height="20" fill="white" stroke="#334155" stroke-width="2"/>
+<circle cx="510" cy="345" r="5" fill="#c83d3d"/><circle cx="510" cy="385" r="5" fill="#b77900"/><text x="540" y="368">R3 · 4.7 kΩ pull-up</text>
+<text x="35" y="485">BAT_SENSE (+)</text><text x="35" y="505" class="small">Same net as BAT IN + above</text>
+<path d="M50 540 H165 M200 540 H345 M435 540 H550 V510 H835" class="wire bat"/>
+<circle cx="165" cy="540" r="4"/><circle cx="200" cy="540" r="4"/><path d="M165 540 L195 522" stroke="#334155" stroke-width="3"/><text x="125" y="575" class="small">J1 · sense jumper</text>
+<rect x="345" y="527" width="90" height="26" fill="white" stroke="#334155" stroke-width="2"/><text x="340" y="505">R1 · 100 kΩ</text>
+<path d="M550 540 V555 M550 600 V630" class="wire gnd"/><rect x="537" y="555" width="26" height="45" fill="white" stroke="#334155" stroke-width="2"/><text x="412" y="585">R2 · 100 kΩ</text>
+<path d="M680 510 V560 M680 580 V630" class="wire gnd"/><path d="M655 560 H705 M655 580 H705" stroke="#334155" stroke-width="3"/><text x="710" y="576">C1 · 100 nF</text>
+<circle cx="550" cy="540" r="5"/><circle cx="680" cy="510" r="5"/><circle cx="550" cy="630" r="5"/><circle cx="680" cy="630" r="5"/>
+<circle cx="320" cy="345" r="5" fill="white" stroke="#c83d3d"/><circle cx="320" cy="385" r="5" fill="white" stroke="#b77900"/><circle cx="320" cy="425" r="5" fill="white" stroke="#334155"/>
+<text x="35" y="690">Battery voltage = A0 voltage × 2 · C1 is non-polarized · R1/R2 preferably 1%</text>
+<text x="35" y="725" class="small">USB supplies the ground reference. Do not add a BAT IN − to C6 GND bridge. Adapter is omitted on perfboard.</text>
+<text x="35" y="749" class="small">Open J1 BEFORE removing C6 USB power; restore manager USB power BEFORE closing J1. J1 has no automatic isolation.</text>
+<text x="35" y="773" class="small">Wi-Fi → authenticated HTTPS / Tailscale Funnel → Linux receiver; independent downstream consumers.</text>
+</svg>

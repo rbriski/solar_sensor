@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 620" role="img" aria-labelledby="title desc">
+<title id="title">End view of saddle and stainless band on the upper dry support tube</title>
+<desc id="desc">A printed saddle rests on a rubber-lined upper tube. The hose clamp wraps across the saddle and below that tube through the half-inch gap. The lower tube is separate. Twenty-millimeter spacers above the saddle provide room for the screw housing below the mounting arm.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse"><path d="M8 4 0 0 0 8Z" fill="#526b71"/></marker></defs>
+<rect width="940" height="620" rx="10" fill="#f5f9f9"/>
+<g font-family="system-ui,sans-serif" fill="#203940">
+<text x="35" y="37" font-size="23" font-weight="700">UPPER TUBE SADDLE · end view</text>
+<text x="35" y="66" font-size="15">Attachment method; band routing is illustrative. The surrounding hub walls are omitted.</text>
+<rect x="218" y="100" width="264" height="48" rx="4" fill="#67999c" stroke="#356b6e" stroke-width="2"/>
+<rect x="234" y="148" width="48" height="80" rx="3" fill="#a6c4c4" stroke="#356b6e" stroke-width="2"/>
+<rect x="418" y="148" width="48" height="80" rx="3" fill="#a6c4c4" stroke="#356b6e" stroke-width="2"/>
+<path d="M222 316V240Q222 228 234 228H466Q478 228 478 240V316H406A56 56 0 0 0 294 316Z" fill="#218c84" stroke="#116962" stroke-width="2"/>
+<circle cx="350" cy="316" r="54.8" fill="#b49265"/>
+<circle cx="350" cy="316" r="50.8" fill="#485d64" stroke="#233e48" stroke-width="2"/>
+<circle cx="350" cy="468.4" r="50.8" fill="#485d64" stroke="#233e48" stroke-width="2"/>
+<path d="M236 223H464Q483 223 483 241L398 344Q350 399 302 344L217 241Q217 223 236 223Z" fill="none" stroke="#7b858c" stroke-width="5"/>
+<rect x="298" y="184.8" width="104" height="44" rx="7" fill="#c4c9cd" stroke="#697982" stroke-width="2"/>
+<path d="M312 196H388M312 205H388M312 214H388" stroke="#778992" stroke-width="2"/>
+<g stroke="#a76520" stroke-width="5"><path d="M258 96V299.2M442 96V299.2"/></g>
+<g fill="#b8bec2" stroke="#687f85" stroke-width="2"><rect x="244" y="87" width="28" height="12" rx="2"/><rect x="428" y="87" width="28" height="12" rx="2"/></g>
+<g fill="none" stroke="#526b71" stroke-width="1.7">
+<path d="M485 123H565M466 166L565 156M482 259L565 252M404 197L565 197M404 316H565M405 468H565"/>
+<path d="M270 366.8H158M300 417.6H158"/>
+<path d="M174 366.8V417.6" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+<path d="M308 345L130 336"/>
+</g>
+<text x="580" y="129" font-size="17">Adjustable mounting arm</text>
+<text x="580" y="162" font-size="17">20 mm spacers</text>
+<text x="580" y="203" font-size="17">Hose-clamp screw stays above tube</text>
+<text x="580" y="258" font-size="17">Printed saddle</text>
+<text x="580" y="312" font-size="17" font-weight="700">Upper dry support · about Ø25.4</text>
+<text x="580" y="338" font-size="15">1 mm EPDM between tube and clamp</text>
+<text x="580" y="469" font-size="17">Lower dry support</text>
+<text x="36" y="329" font-size="15">Thin steel band</text>
+<text x="36" y="388" font-size="17" font-weight="700">≈12.7 mm</text>
+<text x="36" y="410" font-size="15">clear gap</text>
+<text x="35" y="565" font-size="18" font-weight="700">Wrap only the upper support. Do not cinch the two tubes together.</text>
+<text x="35" y="593" font-size="15">R8: #8 × 2-inch self-tapping screws enter the saddle only. No screws enter the collector or roof.</text>
+</g>
+</svg>

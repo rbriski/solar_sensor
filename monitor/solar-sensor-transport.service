@@ -1,0 +1,11 @@
+[Unit]
+Description=Check public Funnel delivery path for the solar roof sensor
+After=network-online.target solar-sensor-collector.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=@ENV@
+ExecStart=@PYTHON@ @WATCHDOG@
+TimeoutStartSec=50
+NoNewPrivileges=true
+PrivateTmp=true

@@ -1,0 +1,31 @@
+{
+  "slicer_version": "2.8.2.61",
+  "profile_source": "https://github.com/bambulab/BambuStudio/tree/v02.08.02.61/resources/profiles/BBL",
+  "status": "Configured from supplied filament label; 0.4 mm nozzle and Textured PEI are stated setup assumptions, not measured calibration",
+  "printer": "Bambu Lab X2D",
+  "nozzle_assumed_mm": 0.4,
+  "plate_assumed": "Textured PEI",
+  "material_confirmed": "White PETG, 1.75 mm; brand not shown; original filament label",
+  "label_nozzle_range_c": [
+    225,
+    240
+  ],
+  "label_bed_range_c": [
+    70,
+    80
+  ],
+  "nozzle_temperature_c": 240,
+  "bed_initial_c": 80,
+  "bed_other_layers_c": 75,
+  "plate_count": 4,
+  "object_count": 13,
+  "layer_height_mm": 0.2,
+  "wall_loops": 6,
+  "top_bottom_layers": 6,
+  "infill": "25% gyroid",
+  "supports": false,
+  "brim_mm": 6,
+  "outer_wall_mm_s": 45,
+  "max_volumetric_mm3_s": 8,
+  "temperature_note": "Printing and flushing set to 240 C; stock X2D startup/end G-code retained. Generated temperature commands checked separately."
+}

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 530" role="img" aria-labelledby="title desc">
+<title id="title">R6 probe arm: paired slots and zip-tie routing</title><desc id="desc">Three pairs of slots run parallel to the probe on opposite sides. A zip tie passes down one slot, under the arm, up the other slot and closes around the probe or cable. The original two mounting holes remain unchanged.</desc>
+<style>text{font-family:system-ui,sans-serif;fill:#203e4b}.h{font-size:25px;font-weight:700}.t{font-size:18px}.s{font-size:16px;fill:#4c6873}.lead{stroke:#718c94;stroke-width:1.3;fill:none}.tie{stroke:#dc8c21;stroke-width:7;fill:none;stroke-linejoin:round}</style>
+<rect width="1000" height="530" rx="12" fill="#f3f7f8"/>
+<text x="35" y="42" class="h">Three pairs of slots · parallel to the probe</text>
+<text x="35" y="72" class="s">R6 replaces only the arm. Two M3 mounting holes and the 160 mm length are retained.</text>
+<g transform="translate(70 130) scale(4)">
+<path d="M4 0H88L100 -2H156Q160 -2 160 2V14Q160 18 156 18H100L88 16H4Q0 16 0 12V4Q0 0 4 0Z" fill="#527c86" stroke="#2e5560" stroke-width=".4"/>
+<g fill="#f3f7f8"><circle cx="7" cy="8" r="1.7"/><circle cx="19" cy="8" r="1.7"/>
+<rect x="106" y=".4" width="8" height="3.2" rx="1.6"/><rect x="121" y=".4" width="8" height="3.2" rx="1.6"/><rect x="136" y=".4" width="8" height="3.2" rx="1.6"/>
+<rect x="106" y="12.4" width="8" height="3.2" rx="1.6"/><rect x="121" y="12.4" width="8" height="3.2" rx="1.6"/><rect x="136" y="12.4" width="8" height="3.2" rx="1.6"/></g>
+<path d="M84 8H148" stroke="#222b32" stroke-width="4"/>
+<rect x="148" y="5" width="35" height="6" rx="2" fill="#bbc7cd" stroke="#526976" stroke-width=".4"/>
+<path d="M110 2V14M125 2V14M140 2V14" stroke="#dc8c21" stroke-width="2.5"/>
+</g>
+<path class="lead" d="M122 178V229H260M558 197V247H707M763 150V117H822"/>
+<text x="75" y="255" class="s">Mounting end unchanged</text>
+<text x="420" y="279" class="s">Each tie uses the two opposite slots at the same position.</text>
+<text x="825" y="121" class="s">Exposed tip</text>
+<path d="M35 308H965" stroke="#ccdde1"/>
+<text x="35" y="346" class="h">Tie path · end view</text>
+<g fill="#527c86" stroke="#2e5560" stroke-width="1.2"><rect x="180" y="400" width="12" height="20"/><rect x="208" y="400" width="44" height="20"/><rect x="268" y="400" width="12" height="20"/></g>
+<circle cx="230" cy="385" r="15" fill="#bbc7cd" stroke="#526976"/>
+<path class="tie" d="M200 395V426Q200 430 204 430H256Q260 430 260 426V395Q260 365 230 365Q200 365 200 395Z"/>
+<rect x="192" y="384" width="15" height="10" rx="2" fill="#dc8c21"/>
+<text x="129" y="464" class="s">Probe/cable on the center strip</text>
+<text x="385" y="382" class="t">1. Feed down the first side slot.</text>
+<text x="385" y="410" class="t">2. Pass underneath and up the opposite slot.</text>
+<text x="385" y="438" class="t">3. Close the tie over the probe or cable.</text>
+<text x="35" y="502" class="s">Use gentle tension. The placement shown restrains insulated cable and leaves the metal sensing end exposed.</text>
+</svg>

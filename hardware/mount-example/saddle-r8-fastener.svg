@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 565" role="img" aria-labelledby="title desc">
+<title id="title">R8 saddle screw stack, section through one attachment hole</title>
+<desc id="desc">A two-inch number-eight pan-head self-tapping screw passes through a large washer, the existing twelve-millimeter arm and twenty-millimeter spacer. It enters the replacement saddle by 17.8 millimeters. The blind pilot is 3.5 millimeters diameter and twenty millimeters deep, leaving a two-millimeter bottom. There is no nut.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse"><path d="M8 4 0 0 0 8Z" fill="#526b71"/></marker></defs>
+<rect width="940" height="565" rx="10" fill="#f5f9f9"/>
+<g font-family="system-ui,sans-serif" fill="#203940">
+<text x="30" y="36" font-size="23" font-weight="700">R8 · FASTEN ENTIRELY FROM ABOVE</text>
+<text x="30" y="63" font-size="15">Section through one screw, outside the tube seat. Dimensions in mm.</text>
+<g stroke="#356b6e" stroke-width="2">
+<path d="M110 126H222V198H110ZM258 126H370V198H258Z" fill="#67999c"/>
+<path d="M204 198H226.5V318H204ZM253.5 198H276V318H253.5Z" fill="#aacccc"/>
+<path d="M180 318H226.5L229.5 321V438H250.5V321L253.5 318H300V450H180Z" fill="#218c84"/>
+</g>
+<g fill="#b8bec2" stroke="#687f85" stroke-width="1.5">
+<path d="M204 120H226.5V126H204ZM253.5 120H276V126H253.5Z"/>
+<path d="M217 120V111Q217 103 240 103Q263 103 263 111V120Z"/>
+</g>
+<path d="M228 120V407L240 424.8L252 407V120Z" fill="#c69756" stroke="#905e26" stroke-width="1.5"/>
+<path d="M228 141L252 132M228 152L252 143M228 163L252 154M228 174L252 165M228 185L252 176M228 196L252 187M228 207L252 198M228 218L252 209M228 229L252 220M228 240L252 231M228 251L252 242M228 262L252 253M228 273L252 264M228 284L252 275M228 295L252 286M228 306L252 297M228 317L252 308M228 328L252 319M228 339L252 330M228 350L252 341M228 361L252 352M228 372L252 363M228 383L252 374M228 394L252 385M228 405L252 396" stroke="#905e26" stroke-width="1.2"/>
+<g fill="none" stroke="#526b71" stroke-width="1.5">
+<path d="M110 120H74M180 424.8H74"/>
+<path d="M84 120V424.8" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+<path d="M278 123H450M372 162H450M278 258H450M302 348H450M252 424.8H450M302 446H450"/>
+</g>
+<text x="63" y="272" transform="rotate(-90 63 272)" text-anchor="middle" font-size="15" font-weight="700">2 inches = 50.8 mm under head</text>
+<text x="466" y="128" font-size="17">Large washer · Ø12, about 1 mm thick</text>
+<text x="466" y="168" font-size="17">Existing arm · 12 mm thick, 6 mm slot</text>
+<text x="466" y="251" font-size="17">Existing spacer · 20 mm tall</text>
+<text x="466" y="276" font-size="15">Ø4.5 bore lets the screw pass freely</text>
+<text x="466" y="341" font-size="18" font-weight="700">Replacement saddle · 22 mm tall</text>
+<text x="466" y="366" font-size="16">Ø3.5 pilot, 20 mm deep; no locknut</text>
+<text x="466" y="418" font-size="16">17.8 mm nominal penetration, including point</text>
+<text x="466" y="443" font-size="16">2.2 mm nominal clearance below screw tip</text>
+<text x="466" y="468" font-size="15">Closed bottom: 2 mm plastic beneath pilot</text>
+<text x="30" y="511" font-size="18" font-weight="700">Clamp saddles to the upper tubes first. Then add spacers and frame.</text>
+<text x="30" y="539" font-size="15">Use #8 × 2-inch pointed self-tapping pan-head screws. Tighten gently with a hand screwdriver.</text>
+</g></svg>

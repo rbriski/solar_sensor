@@ -1,0 +1,8 @@
+{
+  "database": "~/.local/share/solar-sensor/readings.sqlite3",
+  "snapshot": "~/.local/share/solar-sensor/public/latest.json",
+  "ingest_token": "CHANGE_ME",
+  "http_port": 8790,
+  "dashboard_port": 8791,
+  "mqtt_enabled": false
+}

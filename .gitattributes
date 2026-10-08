@@ -1,0 +1,5 @@
+# Generated CAD is reviewed through models, renders and geometry checks.
+*.step binary linguist-generated=true
+*.stl binary linguist-generated=true
+*.3mf binary linguist-generated=true
+firmware/libraries/OneWire/** linguist-vendored=true

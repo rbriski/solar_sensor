@@ -1,0 +1,12 @@
+[Unit]
+Description=One guarded reconnect for a confirmed solar sensor Funnel outage
+
+[Service]
+Type=oneshot
+EnvironmentFile=@ENV@
+ExecStart=@PYTHON@ @WATCHDOG@ --recover
+ExecStopPost=@PYTHON@ @WATCHDOG@ --ensure-up
+TimeoutStartSec=90
+TimeoutStopSec=30
+NoNewPrivileges=true
+PrivateTmp=true

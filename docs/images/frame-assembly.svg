@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 670" role="img" aria-labelledby="title desc">
+<title id="title">Frame attachment, solar panel retainers and probe arm</title>
+<desc id="desc">Four M3 by 45 millimeter screws pass through washers, the six millimeter frame, 25 millimeter spacers and four millimeter lid into nuts in the enclosure body. Four small slotted clips retain the solar panel. The long bar is the optional probe arm.</desc>
+<style>text{font-family:system-ui,sans-serif;fill:#203e4b}.h{font-size:22px;font-weight:700}.t{font-size:17px}.s{font-size:15px;fill:#4c6873}.lead{stroke:#6d858e;stroke-width:1.4;fill:none}.metal{fill:#97a8b2;stroke:#485c68;stroke-width:1.2}</style>
+<rect width="1040" height="670" rx="12" fill="#f3f7f8"/>
+<text x="30" y="40" class="h">Frame attachment · side section</text>
+<text x="30" y="68" class="s">One of four corners; hardware shown schematically.</text>
+<!-- Vertical stack uses 6 pixels/mm: frame Z71–77, lid Z42–46, nut Z35.2–37.6. -->
+<rect x="95" y="220" width="160" height="36" fill="#527c86" stroke="#2e5560"/>
+<rect x="145" y="256" width="50" height="150" rx="4" fill="#bad0d4" stroke="#527c86"/>
+<rect x="75" y="406" width="200" height="24" fill="#8eacb6" stroke="#52717e"/>
+<path d="M75 430H275V545H210V508H130V545H75Z" fill="#dbe5e8" stroke="#52717e"/>
+<rect x="160" y="217" width="20" height="291" fill="#f3f7f8"/>
+<rect class="metal" x="146" y="217" width="48" height="3"/>
+<rect class="metal" x="151" y="200" width="38" height="17" rx="5"/>
+<rect class="metal" x="163" y="217" width="14" height="270"/>
+<rect class="metal" x="150" y="456.4" width="40" height="14.4"/>
+<path d="M163 458H177M163 462H177M163 466H177" stroke="#e4ecef"/>
+<path class="lead" d="M194 208H295M255 238H295M195 331H295M275 418H295M190 464H295"/>
+<text x="305" y="213" class="t">M3 × 45 + washer</text>
+<text x="305" y="243" class="t">6 mm frame</text>
+<text x="305" y="336" class="t">25 mm spacer</text>
+<text x="305" y="423" class="t">4 mm lid</text>
+<text x="305" y="464" class="t">M3 nut in body</text>
+<text x="305" y="489" class="s">Insert through side slot.</text>
+<text x="95" y="578" class="t">The frame, spacers and lid are clamped</text>
+<text x="95" y="602" class="t">to the enclosure body together.</text>
+<text x="95" y="634" class="s">O-ring is farther inward, outside this section.</text>
+<path d="M510 25V642" stroke="#ccdce1"/>
+<text x="545" y="40" class="h">Panel retention · top view</text>
+<g transform="translate(560 98) scale(1.65)">
+<rect x="0" y="-5" width="164" height="162" rx="3" fill="#527c86" stroke="#2e5560"/>
+<rect x="17" y="1" width="130" height="150" fill="#183b53" stroke="#d4e2e8" stroke-width=".5"/>
+<path d="M17 38.5H147M17 76H147M17 113.5H147M49.5 1V151M82 1V151M114.5 1V151" stroke="#416982" stroke-width=".5"/>
+<g fill="#f3f7f8" stroke="#263e49" stroke-width=".7"><circle cx="10" cy="10" r="3"/><circle cx="154" cy="10" r="3"/><circle cx="10" cy="142" r="3"/><circle cx="154" cy="142" r="3"/></g>
+<g fill="#edae50" stroke="#75501b" stroke-width=".6"><rect x="6" y="45" width="12" height="10" rx="1"/><rect x="146" y="45" width="12" height="10" rx="1"/><rect x="6" y="97" width="12" height="10" rx="1"/><rect x="146" y="97" width="12" height="10" rx="1"/></g>
+<g fill="#f3f7f8" stroke="#75501b" stroke-width=".6"><rect x="7.5" y="48.3" width="5" height="3.4" rx="1.7"/><rect x="151.5" y="48.3" width="5" height="3.4" rx="1.7"/><rect x="7.5" y="100.3" width="5" height="3.4" rx="1.7"/><rect x="151.5" y="100.3" width="5" height="3.4" rx="1.7"/></g>
+</g>
+<path class="lead" d="M820 179H862M820 266H862"/>
+<text x="872" y="180" class="t">4 small</text><text x="872" y="205" class="t">slotted clips</text><text x="872" y="240" class="s">M3 × 10 each</text><text x="872" y="265" class="s">Nut underneath</text>
+<text x="545" y="392" class="s">Each clip reaches over about 1 mm of the inactive panel edge.</text>
+<text x="545" y="417" class="s">The frame ledge supports it; clips prevent lifting out.</text>
+<text x="545" y="477" class="h">Long bar = optional probe arm</text>
+<g transform="translate(560 500) scale(2.3)">
+<path d="M4 0H88L100 -2H156Q160 -2 160 2V14Q160 18 156 18H100L88 16H4Q0 16 0 12V4Q0 0 4 0Z" fill="#527c86" stroke="#2e5560" stroke-width=".5"/>
+<g fill="#f3f7f8"><circle cx="7" cy="8" r="1.7"/><circle cx="19" cy="8" r="1.7"/><rect x="106" y=".4" width="8" height="3.2" rx="1.6"/><rect x="121" y=".4" width="8" height="3.2" rx="1.6"/><rect x="136" y=".4" width="8" height="3.2" rx="1.6"/><rect x="106" y="12.4" width="8" height="3.2" rx="1.6"/><rect x="121" y="12.4" width="8" height="3.2" rx="1.6"/><rect x="136" y="12.4" width="8" height="3.2" rx="1.6"/></g>
+</g>
+<text x="545" y="571" class="s">Two round holes bolt onto the enclosure’s external side ear.</text>
+<text x="545" y="596" class="s">R6: three paired slots take ties around the probe/cable.</text>
+<text x="545" y="621" class="s">The arm does not cross or retain the solar panel.</text>
+</svg>

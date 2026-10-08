@@ -1,0 +1,4 @@
+Source: https://github.com/PaulStoffregen/OneWire
+Commit: 800f26f3ee6eb446a72e013785cac3700e54cc13
+Vendored for ESP32-C6 support missing from registry release 2.3.8.
+License is included in OneWire.h / OneWire.cpp.

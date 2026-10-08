@@ -6,3 +6,23 @@
 *.db
 .beads-credential-key
 .beads/proxieddb/
+
+# Local device credentials and generated state
+firmware/roof_sensor/secrets.h
+__pycache__/
+*.sqlite3*
+.venv/
+.venv-*/
+*.env
+*.log
+*.bin
+*.elf
+*.map
+build/
+dist/
+.pytest_cache/
+collector.json
+latest.json
+transport-health.json
+transport-state.json
+*.3mf.backup

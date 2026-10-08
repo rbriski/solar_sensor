@@ -1,0 +1,252 @@
+{
+  "plates": [
+    {
+      "plate_name": "1 - Base",
+      "need_arrange": false,
+      "objects": [
+        {
+          "path": "../models/base.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            32
+          ],
+          "pos_y": [
+            52
+          ],
+          "pos_z": [
+            0
+          ]
+        }
+      ],
+      "plate_params": {
+        "filament_map_mode": "Manual",
+        "filament_map": "1"
+      }
+    },
+    {
+      "plate_name": "2 - Lid and spacers",
+      "need_arrange": false,
+      "objects": [
+        {
+          "path": "../models/lid.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            46
+          ],
+          "pos_y": [
+            58
+          ],
+          "pos_z": [
+            0
+          ]
+        },
+        {
+          "path": "../models/panel_spacer.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            85
+          ],
+          "pos_y": [
+            30
+          ],
+          "pos_z": [
+            0
+          ]
+        },
+        {
+          "path": "../models/panel_spacer.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            113
+          ],
+          "pos_y": [
+            30
+          ],
+          "pos_z": [
+            0
+          ]
+        },
+        {
+          "path": "../models/panel_spacer.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            141
+          ],
+          "pos_y": [
+            30
+          ],
+          "pos_z": [
+            0
+          ]
+        },
+        {
+          "path": "../models/panel_spacer.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            169
+          ],
+          "pos_y": [
+            30
+          ],
+          "pos_z": [
+            0
+          ]
+        }
+      ],
+      "plate_params": {
+        "filament_map_mode": "Manual",
+        "filament_map": "1"
+      }
+    },
+    {
+      "plate_name": "3 - Solar panel frame",
+      "need_arrange": false,
+      "objects": [
+        {
+          "path": "../models/panel_frame.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            46
+          ],
+          "pos_y": [
+            52
+          ],
+          "pos_z": [
+            0
+          ]
+        }
+      ],
+      "plate_params": {
+        "filament_map_mode": "Manual",
+        "filament_map": "1"
+      }
+    },
+    {
+      "plate_name": "4 - Tray, clips and probe arm",
+      "need_arrange": false,
+      "objects": [
+        {
+          "path": "../models/tray.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            46
+          ],
+          "pos_y": [
+            76
+          ],
+          "pos_z": [
+            0
+          ]
+        },
+        {
+          "path": "../models/probe_arm.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            48
+          ],
+          "pos_y": [
+            34
+          ],
+          "pos_z": [
+            0
+          ]
+        },
+        {
+          "path": "../models/panel_clip.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            65
+          ],
+          "pos_y": [
+            66
+          ],
+          "pos_z": [
+            0
+          ]
+        },
+        {
+          "path": "../models/panel_clip.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            103
+          ],
+          "pos_y": [
+            66
+          ],
+          "pos_z": [
+            0
+          ]
+        },
+        {
+          "path": "../models/panel_clip.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            141
+          ],
+          "pos_y": [
+            66
+          ],
+          "pos_z": [
+            0
+          ]
+        },
+        {
+          "path": "../models/panel_clip.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            179
+          ],
+          "pos_y": [
+            66
+          ],
+          "pos_z": [
+            0
+          ]
+        }
+      ],
+      "plate_params": {
+        "filament_map_mode": "Manual",
+        "filament_map": "1"
+      }
+    }
+  ]
+}

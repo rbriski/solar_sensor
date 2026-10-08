@@ -1,0 +1,131 @@
+{
+  "revision": "Current optional mount: self-tapping saddles",
+  "saddle_screw": "#8 x 2 inch self-tapping, 50.8 mm",
+  "saddle_pilot": {
+    "diameter_mm": 3.5,
+    "depth_mm": 20,
+    "tip_clearance_mm": 2.2
+  },
+  "parts": {
+    "carrier": {
+      "extents_mm": [
+        190.0,
+        190.0,
+        8.0
+      ],
+      "volume_mm3": 138359.94845290182,
+      "watertight": true
+    },
+    "arm": {
+      "extents_mm": [
+        137.0,
+        66.0,
+        12.0
+      ],
+      "volume_mm3": 82993.03609214864,
+      "watertight": true
+    },
+    "saddle": {
+      "extents_mm": [
+        22.000000000000004,
+        64.0,
+        44.0
+      ],
+      "volume_mm3": 46291.92999680052,
+      "watertight": true
+    },
+    "spacer-20": {
+      "extents_mm": [
+        12.0,
+        11.997628211975098,
+        20.0
+      ],
+      "volume_mm3": 1943.348176203336,
+      "watertight": true
+    }
+  },
+  "part_counts": {
+    "carrier": 1,
+    "arm": 4,
+    "saddle": 4,
+    "spacer-20": 8
+  },
+  "nominal_collector_mm": {
+    "opening": 73.025,
+    "opposite_pitch": 304.8,
+    "tube_diameter": 25.4,
+    "clear_gap_between_tubes": 12.7,
+    "tube_center_pitch": 38.1
+  },
+  "attachment_centres_mm": [
+    [
+      -32,
+      -82
+    ],
+    [
+      32,
+      -82
+    ],
+    [
+      -32,
+      82
+    ],
+    [
+      32,
+      82
+    ]
+  ],
+  "radial_adjustment_mm": [
+    140.4,
+    164.4
+  ],
+  "opposite_pitch_adjustment_mm": [
+    280.8,
+    328.8
+  ],
+  "arm_saddle_slots_mm": [
+    30,
+    6
+  ],
+  "slot_washer_required": "M4 large washer, 12 mm OD",
+  "saddle_envelope_mm": [
+    44,
+    64,
+    22
+  ],
+  "saddle_groove_diameter_mm": 28,
+  "saddle_bolts_mm": [
+    [
+      -15,
+      -23
+    ],
+    [
+      15,
+      23
+    ]
+  ],
+  "spacer_height_mm": 20,
+  "band": {
+    "type": "W4 stainless worm drive, 40\u201360 mm range, 9 mm band",
+    "example": "NORMA TORRO 40-60/9 C7 W4",
+    "band_thickness_mm": 0.65,
+    "head_envelope_mm": [
+      13,
+      26,
+      11
+    ],
+    "guide_channel_width_mm": 14,
+    "conservative_loop_perimeter_estimate_mm": 177.96,
+    "equivalent_circular_diameter_mm": 56.65,
+    "estimate_note": "Convex hull of unrounded saddle envelope and lined tube; physical routing remains a fit check",
+    "source": "https://www.normagroup.com/content/dam/normagroup-com/en/global/news/press-release-documents/2018/NORMA_TORRO_datasheet_en.pdf"
+  },
+  "checks": "Valid single solids; watertight meshes; existing enclosure ear clearance; no modeled tube, head, bolt, arm, spacer or enclosure interference",
+  "limits": [
+    "User dimensions are approximate; actual tube diameter, band routing and roof clearance must fit without forcing.",
+    "1 mm EPDM liner intended; thin band loops under upper dry support only, not around both tubes.",
+    "Manufacturer hose-clamp tightening torques are NOT a torque specification for these aged ABS supports.",
+    "Hub wall tops and roof elevation were not modeled: position must retain clearance above hub and below bolt ends.",
+    "No measured structural capacity, hot-weather creep life or wind rating established."
+  ]
+}
