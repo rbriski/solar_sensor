@@ -2,4 +2,5 @@
 *.step binary linguist-generated=true
 *.stl binary linguist-generated=true
 *.3mf binary linguist-generated=true
-firmware/libraries/OneWire/** linguist-vendored=true
+# Preserve upstream source bytes, including its existing whitespace.
+firmware/libraries/OneWire/** linguist-vendored=true -whitespace
