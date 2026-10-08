@@ -81,4 +81,4 @@ After a geometry change, update the STEP/STL exports, diagrams, 3MF and validati
 
 ## Publishing changes
 
-Review staged files for private headers, JSON config, database files, logs and machine-specific paths. Keep third-party OneWire notices and profile provenance. No project-wide license has been selected; do not invent one during cleanup. Commit/push when the user authorizes it, report the checks performed, and distinguish computed fit from physical testing.
+Review staged files for private headers, JSON config, database files, logs and machine-specific paths. Original project code, documentation and CAD designs use the [MIT License](LICENSE). Preserve the [third-party notices](THIRD_PARTY_NOTICES.md), upstream license texts and profile provenance when redistributing or updating bundled material. Commit/push when the user authorizes it, report the checks performed, and distinguish computed fit from physical testing.

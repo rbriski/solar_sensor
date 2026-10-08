@@ -50,3 +50,7 @@ The [full schematic](docs/perfboard/full-schematic.svg) and perfboard views rend
 - `hardware/enclosure/`: current CAD, models, settings and assembly instructions.
 
 Start with the C6 build as documented. A different board, battery, adapter, perfboard hole pattern or panel can require wiring and CAD changes. Confirm differences before printing or soldering.
+
+## License
+
+The original code, documentation and CAD designs are available under the [MIT License](LICENSE), copyright © 2026 Bob Briski. Bundled third-party material retains its own terms; see [third-party notices](THIRD_PARTY_NOTICES.md).

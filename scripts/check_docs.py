@@ -7,7 +7,7 @@ from urllib.parse import unquote, urlsplit
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-SCOPES = [ROOT / 'README.md', ROOT / 'CONTRIBUTING.md', ROOT / 'AGENTS.md', ROOT / 'CLAUDE.md']
+SCOPES = list(ROOT.glob('*.md'))
 for folder in ('docs', 'monitor', 'hardware'):
     SCOPES.extend((ROOT / folder).rglob('*.md'))
 
