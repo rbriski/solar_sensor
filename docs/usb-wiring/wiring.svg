@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 730" role="img" aria-labelledby="title desc">
+<title id="title">USB-powered XIAO ESP32-C6 and DS18B20 adapter wiring</title>
+<desc id="desc">Component-side view, USB connector at the top. C6 GND goes to the adapter's left GND header pin. C6 3V3 goes to its middle VCC pin. C6 D2, GPIO2, goes to its right DAT pin. The matching screw terminals connect to the probe's ground, power and data leads. The adapter already contains the 4.7 kiloohm pull-up; no separate resistor is needed.</desc>
+<style>text{font-family:system-ui,-apple-system,sans-serif;fill:#203c37;font-size:18px}.title{font-size:23px;font-weight:700}.small{font-size:15px}.pin{font-size:16px}.wire{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.ground{stroke:#344454}.power{stroke:#cc4149}.data{stroke:#a16b00}.trace{fill:none;stroke-width:2;opacity:.7}.muted{fill:#61706b}</style>
+<rect width="1100" height="730" rx="20" fill="#fff"/>
+<text x="36" y="40" class="title">Three jumpers. The pull-up is already on the adapter.</text>
+<text x="36" y="68" class="small muted">Component side facing you · C6 USB at top · adapter header pins pointing down · not to scale</text>
+
+<!-- USB supplies the board; all probe power comes from the regulated 3V3 pin. -->
+<rect x="120" y="104" width="240" height="62" rx="12" fill="#e9f2ee" stroke="#bdd0c5"/>
+<text x="240" y="131" text-anchor="middle" font-weight="700">Continuous USB power</text>
+<text x="240" y="151" text-anchor="middle" class="small">5 V supply → USB-C</text>
+<path d="M240 167 V211" class="wire ground" stroke-width="10"/>
+<rect x="130" y="221" width="220" height="318" rx="15" fill="#e3efe8" stroke="#587e6f" stroke-width="2"/>
+<rect x="198" y="208" width="84" height="33" rx="8" fill="#cbd2d8" stroke="#586572" stroke-width="2"/>
+<rect x="211" y="216" width="58" height="12" rx="6" fill="#55616b"/>
+<rect x="190" y="387" width="100" height="71" rx="6" fill="#cbd5d2"/>
+<text x="240" y="415" text-anchor="middle" font-weight="700">XIAO</text>
+<text x="240" y="440" text-anchor="middle" font-weight="700">ESP32-C6</text>
+<g fill="#d9ba69" stroke="#8f7335" stroke-width="1.5">
+<circle cx="130" cy="265" r="7"/><circle cx="130" cy="307" r="7"/><circle cx="130" cy="349" r="7"/><circle cx="130" cy="391" r="7"/><circle cx="130" cy="433" r="7"/><circle cx="130" cy="475" r="7"/><circle cx="130" cy="517" r="7"/>
+<circle cx="350" cy="265" r="7"/><circle cx="350" cy="307" r="7"/><circle cx="350" cy="349" r="7"/><circle cx="350" cy="391" r="7"/><circle cx="350" cy="433" r="7"/><circle cx="350" cy="475" r="7"/><circle cx="350" cy="517" r="7"/>
+</g>
+<g class="pin"><text x="146" y="271">D0</text><text x="146" y="313">D1</text><text x="146" y="355" font-weight="800">D2</text><text x="146" y="397">D3</text><text x="146" y="439">D4</text><text x="146" y="481">D5</text><text x="146" y="523">D6</text>
+<text x="332" y="271" text-anchor="end">5V</text><text x="332" y="313" text-anchor="end" font-weight="800">GND</text><text x="332" y="355" text-anchor="end" font-weight="800">3V3</text><text x="332" y="397" text-anchor="end">D10</text><text x="332" y="439" text-anchor="end">D9</text><text x="332" y="481" text-anchor="end">D8</text><text x="332" y="523" text-anchor="end">D7</text></g>
+<text x="380" y="270" class="small muted">5V pin unused</text>
+<text x="130" y="567" class="small muted">D2 = GPIO2 · third pin down on left</text>
+
+<!-- The probe cable fans out to the three labeled screw terminals. -->
+<rect x="632" y="103" width="286" height="65" rx="28" fill="#e4e9ee" stroke="#7e8c95" stroke-width="2"/>
+<text x="775" y="131" text-anchor="middle" font-weight="700">DS18B20 probe</text>
+<text x="775" y="152" text-anchor="middle" class="small">Its three leads go into the screws</text>
+<path d="M695 169 V300" class="wire ground"/>
+<path d="M775 169 V300" class="wire power"/>
+<path d="M855 169 V300" class="wire data"/>
+<g class="small" text-anchor="middle"><rect x="669" y="200" width="52" height="26" rx="5" fill="#fff"/><text x="695" y="219">GND</text><rect x="749" y="200" width="52" height="26" rx="5" fill="#fff"/><text x="775" y="219">VCC</text><rect x="829" y="200" width="52" height="26" rx="5" fill="#fff"/><text x="855" y="219">DATA</text></g>
+
+<rect x="650" y="273" width="250" height="232" rx="13" fill="#243c37" stroke="#142b25" stroke-width="2"/>
+<rect x="668" y="295" width="214" height="59" rx="7" fill="#66ac86"/>
+<path d="M736 296 V353 M815 296 V353" stroke="#397757" stroke-width="2"/>
+<g fill="#cdd7ca" stroke="#516d56" stroke-width="2"><circle cx="695" cy="324" r="15"/><circle cx="775" cy="324" r="15"/><circle cx="855" cy="324" r="15"/></g>
+<path d="M685 331 L705 317 M765 331 L785 317 M845 331 L865 317" stroke="#526a56" stroke-width="4"/>
+<g text-anchor="middle"><text x="695" y="378" style="fill:#fff" class="pin">GND</text><text x="775" y="378" style="fill:#fff" class="pin">VCC</text><text x="855" y="378" style="fill:#fff" class="pin">DAT</text></g>
+<path d="M695 384 V494 M775 384 V494 M855 384 V494" stroke="#a3c7b7" class="trace"/>
+<path d="M775 410 H800 M834 410 H855" stroke="#d4dbc8" stroke-width="3"/>
+<rect x="800" y="399" width="34" height="22" fill="#e9ece0" stroke="#9ca795"/>
+<text x="817" y="415" text-anchor="middle" style="font-size:12px;fill:#17291d">472</text>
+<rect x="681" y="438" width="190" height="27" rx="5" fill="#243c37"/>
+<text x="776" y="457" text-anchor="middle" class="small" style="fill:#e9f6e8">4.7 kΩ pull-up — fitted</text>
+<rect x="682" y="484" width="187" height="20" fill="#151f1c"/>
+<path d="M695 495 V530 M775 495 V530 M855 495 V530" stroke="#b8bec3" stroke-width="7"/>
+<text x="925" y="324" class="small">Screw terminals</text>
+<text x="925" y="346" class="small muted">Probe leads go here</text>
+<text x="925" y="484" class="small">3-pin header</text>
+<text x="925" y="506" class="small muted">Jumpers to C6 here</text>
+
+<!-- Only these three external jumper wires are added. Paths do not cross. -->
+<path id="jumper-gnd" d="M350 307 H530 V550 H695 V530" class="wire ground"/>
+<text x="548" y="541" class="small">GND → GND</text>
+<path id="jumper-vcc" d="M350 349 H480 V590 H775 V530" class="wire power"/>
+<text x="535" y="581" class="small">3V3 → VCC</text>
+<path id="jumper-data" d="M130 349 H70 V630 H855 V530" class="wire data"/>
+<text x="370" y="620" class="small">D2 / GPIO2 → DAT</text>
+<g fill="#344454"><circle cx="350" cy="307" r="5"/><circle cx="695" cy="530" r="5"/></g>
+<g fill="#cc4149"><circle cx="350" cy="349" r="5"/><circle cx="775" cy="530" r="5"/></g>
+<g fill="#a16b00"><circle cx="130" cy="349" r="5"/><circle cx="855" cy="530" r="5"/></g>
+<rect x="36" y="658" width="1028" height="48" rx="9" fill="#eef4ef"/>
+<text x="54" y="688" class="small">Match labels, not wire colors. Adapter order in this view: left GND · middle VCC · right DAT. No extra resistor.</text>
+</svg>

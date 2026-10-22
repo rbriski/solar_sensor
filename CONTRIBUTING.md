@@ -19,10 +19,13 @@ The repo uses [Beads](.agents/skills/beads/SKILL.md) for durable work tracking. 
 | Electrical design | [Full schematic](docs/perfboard/full-schematic.svg), [wiring guide](docs/wiring.md), firmware pin assumptions |
 | Perfboard routes | [render_layout.py](docs/perfboard/render_layout.py), then regenerate SVG/JSON and run its validator |
 | Firmware | `firmware/probe_test/`, `firmware/roof_sensor/`; keep the local `secrets.h` ignored |
+| USB sensor firmware / OTA | `firmware/usb_sensor/`; keep `secrets.yaml`, generated builds and firmware binaries private |
+| USB receiver and releases | `monitor/install_usb.py`, `monitor/firmware_releases.py`, `monitor/usb_release.py`, `monitor/static/usb.html` |
 | Receiver/data validation | `monitor/collector.py`, its tests and config example |
 | Dashboard | `monitor/static/index.html`, `monitor/transport_status.js` and JS tests |
 | Transport diagnosis/recovery | `monitor/transport_watchdog.py` and failure/recovery tests |
 | Receiver installation | `monitor/install.py`, service templates and installer tests |
+| USB pipe enclosure | `hardware/water-enclosure/build_enclosure.py`; see its README for X2D packaging and roundtrip validation |
 | Enclosure geometry | `hardware/enclosure/build_enclosure.py`; current STEP/STL files are in `models/` |
 | Print profile/project | `prepare_bambu.py`, `package_project.py`, `validate_project.py`, `bambu/` |
 | Optional mount | `hardware/mount-example/build_mount.py`; separate from enclosure geometry |
@@ -35,7 +38,7 @@ From the repository root:
 python3 -m venv .venv
 .venv/bin/python -m pip install -r monitor/requirements.txt
 .venv/bin/python -m unittest discover -s monitor -v
-node --test monitor/test_transport_status.cjs
+node --test monitor/test_transport_status.cjs monitor/test_diagnostics.cjs
 python3 docs/perfboard/validate_layout.py
 python3 scripts/check_docs.py
 git diff --check
@@ -50,6 +53,16 @@ bash scripts/check_firmware.sh
 ```
 
 This compiles the probe test, ordinary wireless build and a battery/failure-test variant in a temporary directory using dummy credentials. It never uploads. GitHub Actions runs the software, documentation, layout and firmware checks on pushes and pull requests.
+
+The USB variant uses ESPHome/ESP-IDF so it can build an OTA rollback-capable bootloader, matching the water-softener approach. Install its pinned toolchain separately and compile with dummy credentials:
+
+```bash
+python3 -m venv .venv-usb
+.venv-usb/bin/python -m pip install -r firmware/usb_sensor/requirements.txt
+ESPHOME_BIN="$PWD/.venv-usb/bin/esphome" bash scripts/check_usb_firmware.sh
+```
+
+Receiver tests include isolated USB installation, per-sensor ingestion, private firmware authentication, publication/withdrawal, immutable release identity and native C++ rollback policy tests. Actual power-interruption and bootloader rollback checks require a bench board; a host test or successful compile cannot establish physical recovery. See the [USB guide](docs/usb-sensor.md).
 
 ## CAD and print project
 
@@ -82,3 +95,5 @@ After a geometry change, update the STEP/STL exports, diagrams, 3MF and validati
 ## Publishing changes
 
 Review staged files for private headers, JSON config, database files, logs and machine-specific paths. Original project code, documentation and CAD designs use the [MIT License](LICENSE). Preserve the [third-party notices](THIRD_PARTY_NOTICES.md), upstream license texts and profile provenance when redistributing or updating bundled material. Commit/push when the user authorizes it, report the checks performed, and distinguish computed fit from physical testing.
+
+For firmware health telemetry, retained fault history, and rollout limits, see [sensor diagnostics](docs/sensor-diagnostics.md).

@@ -65,6 +65,7 @@ def install(home, public_url, python):
     page = page.replace("'latest.json?t='", json.dumps(quote(Path(config['snapshot']).name) + '?t='))
     (public/'index.html').write_text(page)
     shutil.copy2(ROOT/'transport_status.js', public/'transport-status.js')
+    (public / 'diagnostics.js').write_text((ROOT / 'diagnostics.js').read_text())
     env_path = config_dir/'transport-watchdog.env'
     env = (f'SOLAR_PUBLIC_URL={env_value(public_url)}\nSOLAR_LOCAL_URL=http://127.0.0.1:{config.get("http_port",8790)}/ingest\n'
            f'SOLAR_SNAPSHOT={env_value(config["snapshot"])}\nSOLAR_FUNNEL_AUTO_RECOVERY=0\n')

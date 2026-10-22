@@ -4,6 +4,8 @@
 
 The receiver accepts token-authenticated HTTPS readings through **Tailscale Funnel**, saves them in SQLite, then acknowledges the event ID. It writes a dashboard snapshot every two seconds. A Pi or another consumer can read the receiver's data independently; MQTT is optional.
 
+For the new always-powered sensor, use the [USB sensor guide](../docs/usb-sensor.md) and `install_usb.py`. It prepares a separate receiver, dashboard, credentials and private firmware directory. The solar installer and defaults documented here continue to serve the original unit.
+
 This setup needs Linux with systemd user services, Python 3.10+, and [Tailscale](https://tailscale.com/download/linux) signed in to your tailnet. Use an always-on receiver. The ESP32 does **not** run Tailscale: it reaches the public Funnel hostname from ordinary Wi-Fi. That network must allow DNS, NTP and the selected HTTPS port.
 
 ## 1. Install the receiver

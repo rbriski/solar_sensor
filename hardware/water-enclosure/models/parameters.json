@@ -1,0 +1,43 @@
+{
+  "revision": "R1",
+  "body_length": 154,
+  "body_width": 60,
+  "body_height": 46,
+  "floor": 3,
+  "ordinary_wall": 2.4,
+  "power_wall": 13,
+  "lid_thickness": 3,
+  "foam_uncompressed": 1.6,
+  "foam_closed_gap": 1.2,
+  "board_size": [
+    70,
+    30
+  ],
+  "board_centers": [
+    66,
+    26
+  ],
+  "board_bottom_z": 9,
+  "populated_height": 30,
+  "board_x_min": -17,
+  "usb_projection": 25,
+  "usb_flex_bay": 22,
+  "pipe_od": 69.85,
+  "liner_thickness": 1,
+  "pipe_center_z": -44.925,
+  "saddle_radius": 35.925,
+  "saddle_centers_x": [
+    -42,
+    42
+  ],
+  "saddle_width_x": 28,
+  "tie_channel": [
+    9,
+    3.5
+  ],
+  "ds16_outer_diameter": 39,
+  "ds16_height": 19,
+  "ds16_entry_hole": 16.2,
+  "cable_center_z": 23,
+  "pg7_hole": 13.2
+}

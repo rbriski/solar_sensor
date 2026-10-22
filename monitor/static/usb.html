@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>@SENSOR@ · Temperature</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f0f5f2;color:#18342e;font:16px/1.6 system-ui,sans-serif}main{max-width:1000px;margin:auto;padding:32px 24px}a{color:#146658}h1{margin:12px 0 4px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:24px 0}.card,section{background:#fff;border:1px solid #cedbd4;border-radius:14px;padding:20px}.value{font-size:28px;font-weight:700}.label,footer{font-size:14px;color:#526a62}.badge{display:inline-block;border-radius:20px;padding:5px 14px;background:#f8e4b9}.good{background:#d5eedb}.bad{background:#f7d8d1}table{width:100%;border-collapse:collapse}td,th{text-align:left;border-bottom:1px solid #e0e7e2;padding:8px}.scroll{overflow:auto;max-height:450px}
+</style></head><body><main>
+<a href="https://github.com/rbriski/solar_sensor">Project and build instructions</a>
+<h1>@SENSOR@</h1><p>USB-powered temperature sensor · Automatic firmware updates</p>
+<p id="status" class="badge" role="status">Waiting for readings…</p>
+<div class="cards">
+<div class="card"><div class="label">Temperature</div><div id="temperature" class="value">—</div><div id="celsius" class="label">—</div></div>
+<div class="card"><div class="label">Last received</div><div id="age" class="value">—</div><div id="received" class="label">—</div></div>
+<div class="card"><div class="label">Firmware installed</div><div id="version" class="value">—</div><div id="update" class="label">—</div></div>
+<div class="card"><div class="label">Available release</div><div id="available" class="value">—</div><div id="checked" class="label">No update check reported yet</div></div>
+</div>
+<p id="detail" class="label">No data yet.</p>
+<section><h2>Recent temperature readings</h2><div class="scroll"><table><thead><tr><th>Received</th><th>Temperature</th><th>Wi-Fi</th><th>Firmware</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+<footer><p>Refreshes every 3 seconds. Receipt times come from durable receiver storage; duplicate deliveries do not make readings appear fresh. Firmware checks normally run hourly. Updates briefly interrupt reporting.</p></footer>
+<section><h2>Sensor diagnostics</h2><pre id="diagnostics" style="white-space:pre-wrap;overflow-wrap:anywhere">Waiting for readings…</pre></section>
+<script src="diagnostics.js"></script>
+<script>
+const $=id=>document.getElementById(id),stamp=t=>new Date(t*1000).toLocaleString();let data=null,failed=false;
+function render(){if(!data)return;$('diagnostics').textContent=sensorDiagnostics(data);const now=Date.now()/1000,l=data.latest;let status='Waiting for readings',good=false;
+if(failed||now-data.generated_at>15)status='Receiver unavailable — values are historical';
+else if(l){const age=Math.max(0,now-l.received_at),overdue=age>Math.max(90,2*l.report_interval_seconds+40);status=overdue?'Reading overdue':l.temp_ok?'Receiving readings':'Probe error';good=!overdue&&l.temp_ok;}
+$('status').textContent=status;$('status').className='badge '+(good?'good':'bad');
+if(!l)return;const age=Math.max(0,now-l.received_at);$('temperature').textContent=l.temp_ok?l.temperature_f.toFixed(1)+' °F':'—';$('celsius').textContent=l.temp_ok?l.temperature_c.toFixed(2)+' °C':'Probe read failed';$('age').textContent=age<60?Math.floor(age)+' sec':Math.floor(age/60)+' min';$('received').textContent=stamp(l.received_at);$('version').textContent=l.firmware_version||'—';$('update').textContent='Release '+(l.firmware_release??'—')+' · '+(l.update_result||'none');$('checked').textContent=l.firmware_checked_at?'Last checked '+stamp(l.firmware_checked_at):'No update check reported yet';const a=data.firmware_available;$('available').textContent=a&&a.release?a.version+' ('+a.release+')':'None offered';$('detail').textContent=data.count+' stored samples · every '+l.report_interval_seconds+' seconds · '+l.wifi_rssi_dbm+' dBm · prior failed deliveries '+(l.previous_failures??0);}
+async function refresh(){try{const response=await fetch('latest.json?t='+Date.now(),{cache:'no-store'});if(!response.ok)throw Error(response.status);data=await response.json();failed=false;$('rows').replaceChildren(...(data.history||[]).slice(-40).reverse().map(r=>{const row=document.createElement('tr');for(const value of [stamp(r.received_at),r.temp_ok?r.temperature_f.toFixed(2)+' °F':'Probe error',r.wifi_rssi_dbm+' dBm',r.firmware_version||'—']){const cell=document.createElement('td');cell.textContent=value;row.append(cell)}return row}));}catch(error){failed=true;if(!data){$('status').textContent='Receiver unavailable';$('status').className='badge bad';}}render();}
+refresh();setInterval(refresh,3000);setInterval(render,1000);
+</script></main></body></html>

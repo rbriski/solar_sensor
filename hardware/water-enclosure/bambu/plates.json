@@ -1,0 +1,78 @@
+{
+  "plates": [
+    {
+      "plate_name": "Water sensor R1 - body, lid and two saddles",
+      "need_arrange": false,
+      "plate_params": {
+        "filament_map_mode": "Manual",
+        "filament_map": "1"
+      },
+      "objects": [
+        {
+          "path": "../models/body.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            128
+          ],
+          "pos_y": [
+            58
+          ],
+          "pos_z": [
+            0
+          ]
+        },
+        {
+          "path": "../models/lid.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            128
+          ],
+          "pos_y": [
+            158
+          ],
+          "pos_z": [
+            0
+          ]
+        },
+        {
+          "path": "../models/saddle.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            226
+          ],
+          "pos_y": [
+            28
+          ],
+          "pos_z": [
+            0
+          ]
+        },
+        {
+          "path": "../models/saddle.stl",
+          "count": 1,
+          "filaments": [
+            1
+          ],
+          "pos_x": [
+            226
+          ],
+          "pos_y": [
+            132
+          ],
+          "pos_z": [
+            0
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -2,6 +2,8 @@
 
 A solar-powered **Seeed XIAO ESP32-C6** reads a waterproof DS18B20 probe, sends a reading over Wi-Fi, then sleeps. A separate Linux receiver stores readings and serves a live dashboard. This repository contains the wiring, firmware, receiver, perfboard layout and printable enclosure needed to reproduce the build.
 
+**Building the simpler USB-powered version?** Follow the [USB temperature sensor guide](docs/usb-sensor.md). It uses the same XIAO ESP32-C6 and DS18B20, stays awake on USB power, and automatically installs approved firmware updates. It needs no solar manager, battery, panel or voltage divider. Its [pipe-mounted enclosure and black-PETG X2D project](hardware/water-enclosure/README.md) use separate USB and probe cable entries. The solar build below remains available for reproduction.
+
 The original unit is assembled and mounted. The current tray and probe arm have been physically fitted. Outdoor lifetime, sealing and battery endurance depend on the installation; the printed enclosure has no certified IP rating.
 
 ![Assembled enclosure and solar panel](docs/images/cad-assembled.png)

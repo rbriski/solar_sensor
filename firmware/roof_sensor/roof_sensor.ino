@@ -9,6 +9,11 @@
 #include <esp_system.h>
 #include <math.h>
 #include "secrets.h"
+#if __has_include("diagnostics_nvs.h")
+#include "diagnostics_nvs.h"
+#else
+#include "../diagnostics/diagnostics_nvs.h"
+#endif
 
 #ifndef ROOF_SLEEP_SECONDS
 #define ROOF_SLEEP_SECONDS 300
@@ -35,10 +40,20 @@ OneWire bus(D2);
 DallasTemperature sensors(&bus);
 NetworkClientSecure transport;
 char eventId[32];
+RTC_DATA_ATTR diagnostics::State diag;
+RTC_DATA_ATTR bool diagDirty=false, diagStored=true, diagWrote=false;
+RTC_DATA_ATTR uint32_t diagClock=0, diagWrite=0;
+unsigned probeDevices=0;
+uint32_t epochNow() { time_t t=time(nullptr); return t>=1767225600 ? uint32_t(t) : 0; }
+uint32_t diagnosticClock() { return diagClock + millis()/1000; }
+void deliveryDiagnostic(uint32_t code) {
+  diagDirty |= diagnostics::delivery(diag,code,epochNow(),diagnosticClock());
+}
 bool acknowledged = false;
 uint32_t awakeStart;
 
 void sleepNow() {
+  diagClock = diagnosticClock() + ROOF_SLEEP_SECONDS;
   esp_sleep_enable_timer_wakeup(uint64_t(ROOF_SLEEP_SECONDS) * 1000000ULL);
   esp_deep_sleep_start();
 }
@@ -60,6 +75,13 @@ void setup() {
   previousStage = 1;
   snprintf(eventId, sizeof(eventId), "%08lx-%lu", (unsigned long)sessionId, (unsigned long)bootCount);
   if (xTaskCreate(deadlineTask, "awake-deadline", 3072, nullptr, 5, nullptr) != pdPASS) sleepNow();
+  if (esp_reset_reason()!=ESP_RST_DEEPSLEEP) {
+    diag=diagnostics::State{};
+    diagStored=diagnostics::load(diag);
+    diagnostics::increment(diag.boots);
+    diagnostics::record(diag,diagnostics::BOOT,0,0,uint32_t(esp_reset_reason()));
+    diagStored=diagnostics::save(diag);
+  }
   Serial.printf("WAKE %s reset=%d previous_stage=%lu\n", eventId, int(esp_reset_reason()), (unsigned long)lastStage);
 
   // Use the C6's built-in antenna.
@@ -69,7 +91,10 @@ void setup() {
   DeviceAddress address;
   char rom[17] = "";
   float c = DEVICE_DISCONNECTED_C;
-  bool sensorOk = sensors.getDeviceCount() == 1 && sensors.getAddress(address, 0) && address[0] == 0x28;
+  probeDevices=sensors.getDeviceCount();
+  const bool addressFound = probeDevices == 1 && sensors.getAddress(address, 0);
+  bool sensorOk = addressFound && address[0] == 0x28;
+  uint32_t probeCode=diagnostics::discovery(probeDevices,!addressFound || address[0] == 0x28);
   if (sensorOk) {
     for (int i = 0; i < 8; ++i) snprintf(rom + i * 2, 3, "%02X", address[i]);
     sensors.setResolution(address, 12);
@@ -78,6 +103,8 @@ void setup() {
     c = sensors.getTempC(address);
     sensorOk = isfinite(c) && c != DEVICE_DISCONNECTED_C && c >= -55 && c <= 125;
   }
+  if(sensorOk) probeCode=diagnostics::OK;
+  diagDirty |= diagnostics::probe(diag,probeCode,epochNow(),diagnosticClock());
   // 100k/100k divider with 100nF to GND: RC=5ms. Sample before radio load.
   uint32_t batterySumMv = 0;
   if (ROOF_BATTERY_SENSE) {
@@ -104,7 +131,9 @@ void setup() {
   WiFi.begin((ROOF_TEST_WIFI_FAILURE && bootCount == 1) ? "solar-sensor-failure-test-unavailable" : WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED && millis() - awakeStart < 12000) delay(50);
   if (WiFi.status() != WL_CONNECTED) {
+    deliveryDiagnostic(diagnostics::WIFI_DOWN);
     Serial.printf("Wi-Fi unavailable; sleep at %lu ms\n", (unsigned long)(millis() - awakeStart));
+    diagnostics::checkpoint(diag,diagDirty,diagStored,diagnosticClock(),diagWrite,diagWrote);
     sleepNow();
   }
   previousStage = 3;
@@ -115,7 +144,9 @@ void setup() {
   configTime(0, 0, "pool.ntp.org", "time.google.com");
   while (time(nullptr) < 1767225600 && millis() - awakeStart < 15000) delay(50);
   if (time(nullptr) < 1767225600) {
+    deliveryDiagnostic(diagnostics::CLOCK_UNSET);
     Serial.println("Clock sync unavailable; sleeping without insecure TLS fallback");
+    diagnostics::checkpoint(diag,diagDirty,diagStored,diagnosticClock(),diagWrite,diagWrote);
     sleepNow();
   }
   transport.setCACert(ROOT_CA);
@@ -129,17 +160,21 @@ void setup() {
     snprintf(tempC, sizeof(tempC), "%.4f", c);
     snprintf(tempF, sizeof(tempF), "%.4f", c * 1.8f + 32);
   }
-  char payload[800];
+  if(sensorOk) diag.last_good=epochNow();
+  diagnostics::checkpoint(diag,diagDirty,diagStored,diagnosticClock(),diagWrite,diagWrote);
+  char diagnosticJson[700];
+  diagnostics::json(diag,diagnosticJson,sizeof(diagnosticJson),probeDevices,diagnosticClock(),0,previousHttpStatus,diagStored,diagDirty);
+  char payload[1800];
   snprintf(payload, sizeof(payload),
     "{\"sensor\":\"roof-solar-reference\",\"event_id\":\"%s\",\"sensor_rom\":\"%s\","
     "\"temp_ok\":%s,\"temperature_c\":%s,\"temperature_f\":%s,"
     "\"battery_ok\":%s,\"battery_v\":%s,\"battery_adc_mv\":%.1f,"
     "\"wifi_rssi_dbm\":%d,\"boot_count\":%lu,\"reset_reason\":%d,\"sleep_seconds\":%u,"
-    "\"previous_failures\":%lu,\"previous_stage\":%lu,\"previous_http_status\":%d,\"awake_before_publish_ms\":%lu}",
+    "\"previous_failures\":%lu,\"previous_stage\":%lu,\"previous_http_status\":%d,\"awake_before_publish_ms\":%lu,\"diagnostics\":%s}",
     eventId, rom, sensorOk ? "true" : "false", tempC, tempF,
     batteryOk ? "true" : "false", batteryText, batteryAdcMv, WiFi.RSSI(),
     (unsigned long)bootCount, int(esp_reset_reason()), ROOF_SLEEP_SECONDS,
-    (unsigned long)(failures - 1), (unsigned long)lastStage, previousHttpStatus, (unsigned long)(millis() - awakeStart));
+    (unsigned long)(failures - 1), (unsigned long)lastStage, previousHttpStatus, (unsigned long)(millis() - awakeStart),diagnosticJson);
   previousStage = 4;
   int status = 0;
   const String url = (ROOF_TEST_HTTPS_FAILURE && bootCount == 2)
@@ -155,11 +190,13 @@ void setup() {
     if (status >= 400 && status < 500) break;
     if (!acknowledged) delay(750);
   }
+  deliveryDiagnostic(acknowledged ? diagnostics::DELIVERY_OK : status==200 ? diagnostics::ACK_FAILED : diagnostics::HTTP_FAILED);
   previousHttpStatus = status;
   if (acknowledged) { failures = 0; previousStage = 0; }
   Serial.printf("Receiver stored=%s HTTP=%d temp=%s F RSSI=%d sleep=%u s awake=%lu ms\n",
                 acknowledged ? "yes" : "no", status, tempF, WiFi.RSSI(), ROOF_SLEEP_SECONDS,
                 (unsigned long)(millis() - awakeStart));
+  diagnostics::checkpoint(diag,diagDirty,diagStored,diagnosticClock(),diagWrite,diagWrote);
   sleepNow();
 }
 void loop() {}

@@ -1,0 +1,231 @@
+substitutions:
+  node_name: usb-temperature
+  friendly_name: USB temperature sensor
+  firmware_release: "1"
+  firmware_version: "1.0.0"
+  report_seconds: "60"
+  update_seconds: "3600"
+  receiver_url: !secret receiver_url
+  ingest_token: !secret ingest_token
+  firmware_password: !secret firmware_password
+
+esphome:
+  name: ${node_name}
+  friendly_name: ${friendly_name}
+  min_version: 2026.8.0
+  includes:
+    - diagnostics.h
+    - diagnostics_nvs.h
+    - update_policy.h
+    - usb_runtime.h
+  project:
+    name: diy.usb_temperature_c6
+    version: ${firmware_version}
+  on_boot:
+    priority: -100
+    then:
+      - lambda: |-
+          static_assert(usb_update::https_url("${receiver_url}"), "Receiver URL must use HTTPS");
+          static_assert(${report_seconds} >= 10 && ${report_seconds} <= 3600, "Report interval must be 10..3600 seconds");
+          static_assert(${update_seconds} >= 300 && ${update_seconds} <= 86400, "Update interval must be 300..86400 seconds");
+          static_assert(${firmware_release} > 0 && ${firmware_release} <= 2147483647, "Invalid release number");
+          ESP_LOGI("usb_sensor", "usb-temperature-c6-v1|${node_name}|${firmware_release}|${firmware_version}");
+          usb_sensor::init();
+          usb_update::init(${firmware_release});
+
+esp32:
+  board: seeed_xiao_esp32c6
+  variant: esp32c6
+  flash_size: 4MB
+  partitions: partitions.csv
+  framework:
+    type: esp-idf
+    advanced:
+      enable_ota_rollback: true
+
+logger:
+  level: INFO
+
+wifi:
+  id: sensor_wifi
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  power_save_mode: none
+  reboot_timeout: 15min
+  on_disconnect:
+    then:
+      - lambda: |-
+          diagnostics::increment(usb_sensor::disconnects);
+          usb_sensor::transport(diagnostics::WIFI_DOWN);
+          usb_sensor::checkpoint();
+
+# XIAO ESP32-C6 onboard antenna selection; these are not probe pins.
+output:
+  - platform: gpio
+    pin: GPIO3
+    id: antenna_enable
+  - platform: gpio
+    pin: GPIO14
+    id: antenna_select
+
+time:
+  - platform: sntp
+    id: network_time
+    timezone: UTC
+
+one_wire:
+  - platform: gpio
+    pin: GPIO2  # XIAO D2. Probe VCC -> 3V3, GND -> GND, 4.7k pull-up to 3V3.
+    id: probe_bus
+
+sensor:
+  - platform: dallas_temp
+    id: probe
+    name: Temperature
+    one_wire_id: probe_bus
+    resolution: 12
+    update_interval: never
+    on_value:
+      then:
+        - lambda: usb_sensor::temperature = x;
+  - platform: wifi_signal
+    id: signal_strength
+    update_interval: 10s
+
+http_request:
+  id: receiver_http
+  timeout: 3s
+  watchdog_timeout: 15s
+  verify_ssl: true
+  follow_redirects: false
+
+safe_mode:
+  boot_is_good_after: 60s
+  boot_is_good_on_shutdown: false
+
+ota:
+  - platform: http_request
+    id: firmware_ota
+    http_request_id: receiver_http
+    on_end:
+      then:
+        - lambda: usb_update::finished();
+    on_error:
+      then:
+        - lambda: usb_update::failed();
+
+interval:
+  - interval: ${report_seconds}s
+    startup_delay: 10s
+    then:
+      - script.execute: report_temperature
+  - interval: ${update_seconds}s
+    startup_delay: 90s  # Allow normal boot confirmation before another update.
+    then:
+      - script.execute: check_firmware
+
+script:
+  - id: report_temperature
+    mode: single
+    then:
+      - lambda: |-
+          usb_sensor::temperature = NAN;
+          usb_sensor::rom.clear();
+          id(probe_bus).search();
+          const auto &devices = id(probe_bus).get_devices();
+          usb_sensor::devices = devices.size();
+          usb_sensor::probe_code = diagnostics::discovery(devices.size(),devices.size()==1 && (devices[0]&0xff)==0x28);
+          if (devices.size() == 1 && (devices[0] & 0xff) == 0x28) {
+            char rom[17];
+            for (int i = 0; i < 8; ++i) snprintf(rom + i * 2, 3, "%02X", unsigned((devices[0] >> (i * 8)) & 0xff));
+            usb_sensor::rom = rom;
+            // Reinitialize only on address change or after a failed read.
+            // Keep normal samples on the component's ordinary update path.
+            static uint64_t configured = 0;
+            if (configured != devices[0] || usb_sensor::diag.streak == 3) {
+              if (usb_sensor::diag.streak > 0) usb_sensor::dirty |= diagnostics::record(usb_sensor::diag,21,usb_sensor::epoch(),usb_sensor::uptime());
+              id(probe).set_address(devices[0]);
+              id(probe).setup();
+              configured = devices[0];
+            }
+            id(probe).update();
+          }
+      - delay: 1s
+      - lambda: |-
+          if (!id(sensor_wifi).is_connected()) usb_sensor::transport(diagnostics::WIFI_DOWN);
+          else if (!usb_sensor::epoch()) usb_sensor::transport(diagnostics::CLOCK_UNSET);
+          int rssi = std::isfinite(id(signal_strength).state) ? int(id(signal_strength).state) : -127;
+          usb_sensor::prepare("${node_name}", ${report_seconds}, ${firmware_release}, "${firmware_version}", rssi);
+      - repeat:
+          count: 2
+          then:
+            - if:
+                condition:
+                  and:
+                    - wifi.connected:
+                    - time.has_time:
+                    - lambda: return !usb_sensor::accepted;
+                then:
+                  - http_request.post:
+                      id: receiver_http
+                      url: "${receiver_url}/ingest"
+                      request_headers:
+                        Content-Type: application/json
+                        Authorization: "Bearer ${ingest_token}"
+                      body: !lambda return usb_sensor::payload;
+                      capture_response: true
+                      max_response_buffer_size: 64
+                      on_response:
+                        then:
+                          - lambda: usb_sensor::response(response->status_code, body);
+                      on_error:
+                        then:
+                          - lambda: |-
+                              usb_sensor::http_status = 0;
+                              usb_sensor::transport(diagnostics::HTTP_FAILED);
+                  - delay: 750ms
+      - lambda: usb_sensor::finish();
+
+  - id: check_firmware
+    mode: single
+    then:
+      # HTTP/flash work is synchronous. Never interleave it with a sample/retry.
+      - script.wait: report_temperature
+      - if:
+          condition:
+            and:
+              - wifi.connected:
+              - time.has_time:
+          then:
+            - lambda: usb_update::ready = false;
+            - http_request.get:
+                id: receiver_http
+                url: "${receiver_url}/firmware/manifest.json"
+                request_headers:
+                  Authorization: !lambda 'return usb_update::authorization("${node_name}", "${firmware_password}");'
+                capture_response: true
+                max_response_buffer_size: 2048
+                on_response:
+                  then:
+                    - lambda: |-
+                        if (response->status_code == 200)
+                          usb_update::prepare(body, "${node_name}", "${receiver_url}");
+                        else usb_update::result(usb_update::CHECK_FAILED);
+                on_error:
+                  then:
+                    - lambda: usb_update::result(usb_update::CHECK_FAILED);
+            - if:
+                condition:
+                  lambda: return usb_update::begin();
+                then:
+                  - lambda: id(receiver_http).set_timeout(10000);
+                  - ota.http_request.flash:
+                      id: firmware_ota
+                      url: !lambda return usb_update::image_url;
+                      md5: !lambda return usb_update::checksum;
+                      username: ${node_name}
+                      password: !secret firmware_password
+                  # Only failure returns here. Try again at the next scheduled check.
+                  - lambda: |-
+                      usb_update::failed();
+                      id(receiver_http).set_timeout(3000);

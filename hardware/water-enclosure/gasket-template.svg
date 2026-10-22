@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297">
+<rect width="210" height="297" fill="white"/>
+<g font-family="sans-serif" fill="#172b29"><text x="20" y="20" font-size="6">Water-temperature R1 — lid gasket</text>
+<text x="20" y="29" font-size="3.8">Print at 100% / Actual size. Check the 50 mm line.</text>
+<text x="20" y="36" font-size="3.8">1/16 in (about 1.6 mm) closed-cell foam; one continuous ring.</text></g>
+<g fill="none" stroke="black" stroke-width="0.25">
+<rect x="29" y="51" width="152" height="58" rx="7"/>
+<rect x="40.3" y="54.3" width="137.4" height="51.4" rx="5.7"/>
+<path d="M30 135 H80 M30 132 V138 M80 132 V138"/></g>
+<g font-family="sans-serif" font-size="4" fill="#172b29"><text x="54" y="83">Remove the center; keep the surrounding ring.</text>
+<text x="20" y="122">Wide end (left) faces the grey DS16 USB gland.</text>
+<text x="40" y="145">50 mm check line</text>
+<text x="20" y="158">Outer: 152 × 58 mm, corner radius 7 mm.</text>
+<text x="20" y="167">Opening: 137.4 × 51.4 mm, radius 5.7 mm.</text>
+<text x="20" y="176">Opening is offset 4 mm toward the PG7 sensor end.</text>
+<text x="20" y="190">Cut on a separate mat. Keep adhesive out of the cavity.</text></g></svg>

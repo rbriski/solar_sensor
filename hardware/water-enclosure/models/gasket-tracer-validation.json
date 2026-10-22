@@ -1,0 +1,17 @@
+{
+  "valid_solid": true,
+  "watertight": true,
+  "dimensions_mm": [
+    152,
+    58,
+    2.0
+  ],
+  "opening_mm": [
+    137.4,
+    51.4
+  ],
+  "opening_offset_x_mm": 4,
+  "exact_enclosure_gasket_profile": true,
+  "volume_mm3": 3478.935389421532,
+  "usage": "Rigid tracing tool only; install the cut foam gasket, not this PETG ring."
+}

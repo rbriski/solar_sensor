@@ -2,6 +2,8 @@
 
 Read [README.md](README.md) for the build order and [CONTRIBUTING.md](CONTRIBUTING.md) for sources and validation commands. The current hardware is **XIAO ESP32-C6**, DFR0559, DS18B20 and a 30 × 70 mm perfboard. Do not substitute another XIAO pinout.
 
+There are two variants: the original solar build above and the USB-powered **XIAO ESP32-C6 + DS18B20** in [docs/usb-sensor.md](docs/usb-sensor.md). Preserve the solar firmware, hardware and reproduction guides. USB firmware uses ESPHome with pull OTA, no battery/solar hardware, and a separate receiver instance; its pipe enclosure is in [hardware/water-enclosure](hardware/water-enclosure/README.md). Never publish credential-bearing firmware binaries in Git or the public report directory. Preparing a release does not authorize publishing it or flashing a device.
+
 ## Working rules
 
 - Use the [Beads skill](.agents/skills/beads/SKILL.md) and run `bd prime` for workflow context. Use `bd` for all durable task tracking, and `bd remember` for project memory; do not create Markdown task lists or MEMORY.md.

@@ -1,0 +1,104 @@
+{
+    "error_string": "Success.",
+    "export_time": 3384,
+    "layer_height": 0.20000000298023224,
+    "plate_index": 0,
+    "prepare_time": 311,
+    "return_code": 0,
+    "sliced_plates": [
+        {
+            "feature_type_times": {
+                "Bottom surface": 977.9207763671875,
+                "Bridge": 1756.223876953125,
+                "Brim": 621.776123046875,
+                "Custom": 285.47186279296875,
+                "Flush": 29.0,
+                "Inner wall": 11276.06640625,
+                "Internal solid infill": 6140.5732421875,
+                "Outer wall": 6302.30126953125,
+                "Overhang wall": 41.033939361572266,
+                "Sparse infill": 3402.465087890625,
+                "Top surface": 2069.7216796875,
+                "Travel": 1753.362548828125,
+                "Undefined": 1747.696533203125
+            },
+            "filament_change_times": 0,
+            "filaments": [
+                {
+                    "filament_id": "GFG99",
+                    "id": 1,
+                    "main_used_g": 184.37908935546875,
+                    "total_used_g": 184.37908935546875
+                }
+            ],
+            "generate_support_material_time": 384,
+            "id": 1,
+            "infill_time": 2588,
+            "layer_filament_change": 0,
+            "main_predication": 34309.25390625,
+            "make_perimeters_time": 3690,
+            "obj_cached_cnt": 0,
+            "objects": [
+                {
+                    "bbox": {
+                        "depth": 76.0,
+                        "height": 46.0,
+                        "width": 154.0,
+                        "x": 51.0,
+                        "y": 20.0,
+                        "z": 0.0
+                    },
+                    "id": 15,
+                    "name": "body_1",
+                    "triangle_count": 18624
+                },
+                {
+                    "bbox": {
+                        "depth": 76.0,
+                        "height": 6.0,
+                        "width": 154.0,
+                        "x": 51.0,
+                        "y": 120.0,
+                        "z": 0.0
+                    },
+                    "id": 35,
+                    "name": "lid_1",
+                    "triangle_count": 8588
+                },
+                {
+                    "bbox": {
+                        "depth": 60.0,
+                        "height": 28.0,
+                        "width": 18.0,
+                        "x": 226.0,
+                        "y": 28.0,
+                        "z": -1.7763568394002505e-15
+                    },
+                    "id": 55,
+                    "name": "saddle_1",
+                    "triangle_count": 2798
+                },
+                {
+                    "bbox": {
+                        "depth": 60.0,
+                        "height": 28.0,
+                        "width": 18.0,
+                        "x": 226.0,
+                        "y": 132.0,
+                        "z": -1.7763568394002505e-15
+                    },
+                    "id": 75,
+                    "name": "saddle_1",
+                    "triangle_count": 2798
+                }
+            ],
+            "sliced_time": 13999,
+            "sliced_time_with_cache": 6403,
+            "total_predication": 34647.05859375,
+            "triangle_count": 32808,
+            "warning_message": ""
+        }
+    ],
+    "sparse_infill_density": 25.0,
+    "wall_loops": 6
+}

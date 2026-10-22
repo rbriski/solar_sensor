@@ -4,3 +4,6 @@
 *.3mf binary linguist-generated=true
 # Preserve upstream source bytes, including its existing whitespace.
 firmware/libraries/OneWire/** linguist-vendored=true -whitespace
+
+# PDF cross-reference tables contain required byte offsets and spacing.
+*.pdf binary

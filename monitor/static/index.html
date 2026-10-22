@@ -11,9 +11,11 @@
 <section><h2>Public delivery route</h2><div id="transport-status" class="badge" role="status">Checking network…</div><p id="transport-detail" class="muted">Testing the public HTTPS route used by the sensor.</p><p id="transport-checked" class="label"></p></section>
 <footer><p>Refreshes every 3 seconds. Freshness is based on receiver receipt time, not a replayed or retried value. A sleeping sensor is normal between scheduled readings. Battery volts use the external A0 divider. Voltage is not an exact charge percentage; load and charging affect it. Missing or invalid readings display a dash.</p><p id="diagnostics"></p></footer>
 <script src="transport-status.js"></script>
+<section><h2>Sensor diagnostics</h2><pre id="diagnostics" style="white-space:pre-wrap;overflow-wrap:anywhere">Waiting for readings…</pre></section>
+<script src="diagnostics.js"></script>
 <script>
 let data=null,fetchFailed=false,transport=null,transportFetchFailed=false;const $=id=>document.getElementById(id);const fmt=t=>new Date(t*1000).toLocaleTimeString();
-function render(){if(!data)return;const now=Date.now()/1000,l=data.latest;let state='Waiting for first reading',cls='',detail='Collector is running; no sensor message has been stored yet.';
+function render(){if(!data)return;$('diagnostics').textContent=sensorDiagnostics(data);const now=Date.now()/1000,l=data.latest;let state='Waiting for first reading',cls='',detail='Collector is running; no sensor message has been stored yet.';
 if(fetchFailed||now-data.generated_at>15){state='Collector unavailable';cls='bad';detail='The status feed is not updating. Values below are historical.'}
 else if(l){const age=Math.max(0,now-l.received_at),limit=Math.max(90,l.sleep_seconds*2+40);state=age>limit?'Reading overdue':l.temp_ok?'Receiving readings':'Sensor error';cls=age>limit||!l.temp_ok?'bad':'good';detail=age>limit?'No recent message. See the public delivery check below to distinguish a network outage from a sensor outage.':l.temp_ok?'Latest sample is stored on the receiver.':'The node is online, but the probe did not return a valid temperature.';
 $('battery').textContent=l.battery_ok===true&&Number.isFinite(l.battery_v)?l.battery_v.toFixed(2)+' V':'—';$('battery-detail').textContent=l.battery_ok===undefined?'Not reported by this firmware':l.battery_ok?'Measured before Wi-Fi transmission':'Sensing disabled, disconnected or out of range';

@@ -1,0 +1,56 @@
+{
+  "slicer": "Bambu Studio 2.8.2.61",
+  "plate_count": 1,
+  "part_count": 4,
+  "sliced": true,
+  "no_plate_warnings": true,
+  "seconds": 34647,
+  "grams": 184.4,
+  "limitations": [
+    "Physical fit, weather sealing and long-term strength untested.",
+    "Generic black PETG profile is not a measured spool calibration.",
+    "No GUI interaction tested. CAD thumbnail supplied after native offscreen thumbnail failure.",
+    "Stock X2D reserved T65279/T65535 diagnostics retained; machine G-code unchanged."
+  ],
+  "embedded_meshes_match_current_STLs": true,
+  "plate_bounds_and_brim_clearance": true,
+  "temperature_commands": {
+    "nozzle": [
+      0.0,
+      140.0,
+      175.0,
+      215.0,
+      255.0
+    ],
+    "bed": [
+      0.0,
+      70.0
+    ],
+    "flush": [
+      140.0,
+      255.0,
+      270.0
+    ]
+  },
+  "sha256": "cab935dd348c4e067be7960dcf66e6791a963b972040361256efecd1121db03e",
+  "reopened_and_resliced": true,
+  "roundtrip_settings_preserved": true,
+  "roundtrip_temperatures": {
+    "nozzle": [
+      0.0,
+      140.0,
+      175.0,
+      215.0,
+      255.0
+    ],
+    "bed": [
+      0.0,
+      70.0
+    ],
+    "flush": [
+      140.0,
+      255.0,
+      270.0
+    ]
+  }
+}

@@ -9,6 +9,8 @@
 
 # Local device credentials and generated state
 firmware/roof_sensor/secrets.h
+firmware/usb_sensor/secrets.yaml
+firmware/usb_sensor/.esphome/
 __pycache__/
 *.sqlite3*
 .venv/
